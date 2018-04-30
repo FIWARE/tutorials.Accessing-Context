@@ -10,6 +10,7 @@
 const NgsiV2 = require('ngsi_v2');
 const defaultClient = NgsiV2.ApiClient.instance;
 const debug = require('debug')('proxy:server');
+const monitor = require('../lib/monitoring');
 
 // The basePath must be set - this is the location of the Orion
 // context broker. It is best to do this with an environment
@@ -24,6 +25,7 @@ defaultClient.basePath = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2
 //     'http://{{orion}}/v2/entities/?type=Store&options=keyValues'
 //
 function displayStore(req, res) {
+	monitor('NGSI', 'retrieveEntity ' + req.params.storeId, req);
 	retrieveEntity(
 		req.params.storeId, { options: 'keyValues', type: 'Store' })
 	.then(store => {
@@ -47,6 +49,8 @@ function displayStore(req, res) {
 //     'http://{{orion}}/v2/entities/?type=InventoryItem&options=keyValues&q=refStore==<entity-id>'
 //
 function displayTillInfo(req, res) {
+	monitor('NGSI', 'listEntities type=Product', req);
+	monitor('NGSI', 'listEntities type=InventoryItem refStore=' + req.params.storeId, req);
 	Promise.all([ 
 		listEntities({
 		options: 'keyValues',
@@ -84,11 +88,16 @@ function displayTillInfo(req, res) {
 // There is no error handling on this function, it has been
 // left to a function on the router.
 async function buyItem(req, res) {
+	monitor('NGSI', 'retrieveEntity ' + req.params.inventoryId, req);
 	const inventory = await retrieveEntity(req.params.inventoryId, {
 		options: 'keyValues',
 		type: 'InventoryItem',
 	});
 	const count = inventory.shelfCount - 1;
+
+	monitor('NGSI', 'updateExistingEntityAttributes ' + req.params.inventoryId, req, { 
+		shelfCount: { type: 'Integer', value: count }
+	});
 	await updateExistingEntityAttributes(
 		req.params.inventoryId,
 		{ shelfCount: { type: 'Integer', value: count } },
