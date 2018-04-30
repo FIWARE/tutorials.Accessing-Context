@@ -11,7 +11,7 @@ data. This removes the need to use the command line to invoke cUrl commands.
 The tutorial is mainly concerned with discussing code written in Node.js, however some of the
 results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman documentation](http://fiware.github.io/tutorials.Accessing-Context/) for the same commands is also available.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/7c9bed4bd2ce5213a80b)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fb5f564d9bc65fc3690e)
 
 # Contents
 
@@ -99,7 +99,6 @@ const options = { method: 'GET',
 
 request(options, function (error, response, body) {
   if (error) throw new Error(error);
-
   console.log(body);
 });
 ```
@@ -331,8 +330,15 @@ function displayStore(req, res) {
 }
 ```
 
-Indirectly this is making an HTTP GET request to `http://{{orion}}/v2/entities/<store-id>?type=Store&options=keyValues`.
+Indirectly this is making an HTTP GET request to `http://localhost:1026/v2/entities/<store-id>?type=Store&options=keyValues`.
 Note the re-use of the Store URN in the incoming request.
+
+The equivalent cUrl command would be as shown:
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+```
 
 The response will be as shown below:
 
@@ -372,7 +378,25 @@ store that does not exist. This will forward to an error page as shown:
 
 #### `http://localhost:3000/app/store/urn:ngsi-ld:Store:005`
 
-![Store 1](https://fiware.github.io/tutorials.Accessing-Context/img/store.png)
+![Store 5](https://fiware.github.io/tutorials.Accessing-Context/img/store-error.png)
+
+The equivalent cUrl command would be as shown:
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+```
+
+The response has a status of **404 Not Found** with a body as shown below:
+
+```json
+{
+    "error": "NotFound",
+    "description": "The requested entity has not been found. Check type and id"
+}
+```
+
+The `error` object in the `catch` method hold the error response. This is then displayed on the front end.
 
 
 ### Aggregating Products and Inventory Items
@@ -380,6 +404,8 @@ store that does not exist. This will forward to an error page as shown:
 This example reads the context data of the current **InventoryItem** entities for a given store and combines
 the information with the prices from the **Product** entities. The result is information to be displayed on
 the cash till.
+
+![Till](https://fiware.github.io/tutorials.Accessing-Context/img/till.png)
 
 Multiple entities can be requested and aggregated by creating a `Promise` chain or by usign `Promise.all`. 
 Here the **Product**  and **InventoryItems** entities have been requested using the `apiInstance.listEntities()` 
@@ -443,13 +469,23 @@ Again an error handler has been created to ensure that if any of the HTTP reques
 
 Retrieving the full list of **Product** entities for each request is not efficient. It would be better to load the list of products from cache, and only update the list if prices have changed. This could be achieved using the NGSI Subscription mechanism which is the subject of a subsequent tutorial.
 
+This is the equivalent of the following cURL commands (plus some business logic)
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/?type=Product&options=keyValues'
+curl -X GET \
+  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'  
+```
+
+
 ### Updating Context
 
 Buying an item will involve decrementing the number of items left on a shelf. The example consists of two linked requests.
 The reading of the **InventoryItem** entity data can be done using the `apiInstance.retrieveEntity()` method as shown 
 previously. The data is then ammended  in memory before being sent to the Orion Context Broker using the 
 `apiInstance.updateExistingEntityAttributes()` method.  This is effectively just a wrapper around an HTTP PATCH request to
-`http://{{orion}}/v2/entities/<inventory-id>?type=InventoryItem`, with a body containing the elements to be updated.
+`http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem`, with a body containing the elements to be updated.
 There is no error handling on this function, it has been left to a function on the router.
 
 
@@ -481,8 +517,22 @@ function updateExistingEntityAttributes(entityId, body, opts) {
 ```
 
 
-Care should be taken when amending the context to ensure that changes of state are committed atomically. This is not an issue in Node.JS since it is single threaded - each request but will execute each request one by one. However in multithreaded environments (such as Java for example) it could be possible to concurrently service two buy requests concurrently - meaning that the `shelfCount` will only be reduced once if the requests interleave. This issue can be resolved by the use of a monitor mechanism.
+Care should be taken when amending the context to ensure that changes of state are committed atomically. This is not an issue in Node.JS since it is single threaded - each request but will execute each request one by one. However in multithreaded environments (such as Java for example) it could be possible to service two buy requests concurrently - meaning that the `shelfCount` will only be reduced once if the requests interleave. This issue can be resolved by the use of a monitor mechanism.
 
+This is the equivalent of the following cURL commands (plus some business logic)
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:001/attrs/shelfCount/value'
+curl -X PATCH \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -H 'Postman-Token: af6d60fe-ef9f-4d54-8382-3ddd48d43b82' \
+  -d '{ "shelfCount": 
+  { "type": "Integer", "value": "13" } 
+}'
+```
 
 
 
