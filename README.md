@@ -297,7 +297,7 @@ defaultClient.basePath = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2
 
 This example reads the context data of a given **Store** entity to display the results on screen.
 Reading entity data can be done using the `apiInstance.retrieveEntity()` method. Since the library uses callbacks,
-they have been wrapped by a `Promise` function as shown below. The libary function `apiInstance.retrieveEntity()` 
+they have been wrapped by a `Promise` function as shown below. The library function `apiInstance.retrieveEntity()` 
 will fill out the URL for the GET request and make the necessary HTTP call:
 
 ```javascript
@@ -526,9 +526,7 @@ curl -X GET \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:001/attrs/shelfCount/value'
 curl -X PATCH \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
-  -H 'Cache-Control: no-cache' \
   -H 'Content-Type: application/json' \
-  -H 'Postman-Token: af6d60fe-ef9f-4d54-8382-3ddd48d43b82' \
   -d '{ "shelfCount": 
   { "type": "Integer", "value": "13" } 
 }'
