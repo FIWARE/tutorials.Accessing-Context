@@ -252,7 +252,7 @@ All the code Node.js Express for the demo can be found within the `proxy` folder
 ## NGSI v2 npm library
 
 An NGSI v2 compatible [npm library](https://github.com/smartsdk/ngsi-sdk-javascript) has been developed by the
-(SmartSDK](https://www.smartsdk.eu/) team. This is a callback-based library which will be used to take care of
+[SmartSDK](https://www.smartsdk.eu/) team. This is a callback-based library which will be used to take care of
 our low level HTTP requests and will simplify the code to be written. The methods exposed in the library map
 directly onto the NGSI v2 [CRUD operations](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)
 with the following names:
@@ -384,7 +384,7 @@ The equivalent cUrl command would be as shown:
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?options=keyValues'
 ```
 
 The response has a status of **404 Not Found** with a body as shown below:
