@@ -2,7 +2,7 @@
 
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。
 
-このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
+このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
 
 このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
 
@@ -49,9 +49,9 @@
 <a name="making-http-requests-in-the-language-of-your-choice"></a>
 ## 任意の言語で HTTP リクエストを作成
 
-[NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) の仕様では、HTTP 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがって、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語でもアクセスできます。
+[NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) の仕様では、HTTP 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがって、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語でもアクセスできます。
 
-例えば、[PHP](https://secure.php.net/), [Node.js](https://Node.js.org/), [Java](https://www.oracle.com/java/) で書かれたものと同じ HTTP リクエストです。
+例えば、[PHP](https://secure.php.net/), [Node.js](https://nodejs.org/), [Java](https://www.oracle.com/java/) で書かれたものと同じ HTTP リクエストです。
 
 
 #### PHP (with `HTTPRequest`)
@@ -162,12 +162,12 @@ try {
 
 したがって、アーキテクチャは4つの要素で構成されます :
 
-* [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) を使用してリクエストを受信する Orion Context Broker サーバ
+* [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信する Orion Context Broker サーバ
 * Orion Context Broker サーバに関連付けられている MongoDB データベース
 * コンテキスト・プロバイダ NGSI プロキシは次のようになります :
-    + [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) を使用してリクエストを受信します
+    + [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信します
     + 独自の API を独自のフォーマットで使用して、公開されているデータソースへのリクエストを行います
-    + [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) 形式でコンテキスト・データを Orion Context Broker に返します
+    + [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 形式でコンテキスト・データを Orion Context Broker に返します
 * 在庫管理フロントエンドは以下を行います : 
     + ストア情報を表示します
     + 各ストアで購入できる製品を表示します

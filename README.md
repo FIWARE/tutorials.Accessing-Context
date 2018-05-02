@@ -63,7 +63,7 @@ depending upon business needs.
 
 ## Making HTTP Requests in the language of your choice
 
-The [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests. 
+The [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests. 
 
 Here for example is the same HTTP request written in [PHP](https://secure.php.net/), [Node.js](https://Node.js.org/) and [Java](https://www.oracle.com/java/)
 
@@ -193,12 +193,12 @@ proxy has also been added. To visualise and interact with the Context we will ad
 
 Therefore, the architecture will consist of four elements:
 
-* The Orion Context Broker server which will receive requests using [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/)
+* The Orion Context Broker server which will receive requests using [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 * The underlying MongoDB database associated to the Orion Context Broker server
 * The Context Provider NGSI proxy which will will:
   + receive requests using [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/)
   + makes requests to publicly available data sources using their own APIs in a proprietory format 
-  + returns context data back to the Orion Context Broker in [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) format.
+  + returns context data back to the Orion Context Broker in [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) format.
 * The Stock Management Frontend which will will:
   + Display store information
   + Show which products can be bought at each store
