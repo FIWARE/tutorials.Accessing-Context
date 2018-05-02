@@ -19,6 +19,7 @@ results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman 
 
 - [Accessing the Context Data](#accessing-the-context-data)
   * [Making HTTP requests in the language of your choice](#making-http-requests-in-the-language-of-your-choice)
+  * [Generating NGSI API Clients](#generating-ngsi-api-clients)
   * [The teaching goal of this tutorial](#the-teaching-goal-of-this-tutorial)
   * [Entities within a stock management system](#entities-within-a-stock-management-system)
 - [Architecture](#architecture)
@@ -134,7 +135,10 @@ try {
 }
 ```
 
-As you can see each example uses their own programming paradigm to do the following:
+
+## Generating NGSI API Clients
+
+As you can see from the examples above, each one uses their own programming paradigm to do the following:
 
 * Create a well formed URL.
 * Make an HTTP GET request.
@@ -143,6 +147,16 @@ As you can see each example uses their own programming paradigm to do the follow
 * Return the body of the request for further processing.
 
 Since such boilerplate code is frequently re-used it is usually hidden within a library. 
+
+The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NSGI v2 Swagger Specification](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+
+```console
+swagger-codegen generate \
+  -l javascript \
+  -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json 
+```
+
+The generated client can then be used by the code within your own application.
 
 ## The teaching goal of this tutorial
 
@@ -253,7 +267,7 @@ All the code Node.js Express for the demo can be found within the `proxy` folder
 
 ## NGSI v2 npm library
 
-An NGSI v2 compatible [npm library](https://github.com/smartsdk/ngsi-sdk-javascript) has been developed by the
+A Swagger Generated NGSI v2 client [npm library](https://github.com/smartsdk/ngsi-sdk-javascript) has been developed by the
 [SmartSDK](https://www.smartsdk.eu/) team. This is a callback-based library which will be used to take care of
 our low level HTTP requests and will simplify the code to be written. The methods exposed in the library map
 directly onto the NGSI v2 [CRUD operations](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)
