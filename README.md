@@ -4,7 +4,7 @@ This tutorial teaches FIWARE users how to alter the context programmatically
 
 The tutorial builds on the  entities created in the previous 
 [stock management example](https://github.com/Fiware/tutorials.Context-Providers/)
-and enables a user understand how to write code in an [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/)
+and enables a user understand how to write code in an [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 capable [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context 
 data. This removes the need to use the command line to invoke cUrl commands.
 
@@ -196,7 +196,7 @@ Therefore, the architecture will consist of four elements:
 * The Orion Context Broker server which will receive requests using [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 * The underlying MongoDB database associated to the Orion Context Broker server
 * The Context Provider NGSI proxy which will will:
-  + receive requests using [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/)
+  + receive requests using [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
   + makes requests to publicly available data sources using their own APIs in a proprietory format 
   + returns context data back to the Orion Context Broker in [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) format.
 * The Stock Management Frontend which will will:
