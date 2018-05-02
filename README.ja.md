@@ -2,7 +2,7 @@
 
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。
 
-このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
+このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
 
 このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
 
@@ -12,6 +12,7 @@
 
 - [コンテキスト・データへのアクセス](#accessing-the-context-data)
   * [任意の言語で HTTP リクエストを作成](#making-http-requests-in-the-language-of-your-choice)
+  * [NGSI API クライアントを生成](#generating-ngsi-api-clients)
   * [このチュートリアルの目標](#the-teaching-goal-of-this-tutorial)
   * [在庫管理システム内のエンティティ](#entities-within-a-stock-management-system)
 - [アーキテクチャ](#architecture)
@@ -49,7 +50,7 @@
 <a name="making-http-requests-in-the-language-of-your-choice"></a>
 ## 任意の言語で HTTP リクエストを作成
 
-[NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) の仕様では、HTTP 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがって、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語でもアクセスできます。
+[NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) の仕様では、HTTP 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがって、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語でもアクセスできます。
 
 例えば、[PHP](https://secure.php.net/), [Node.js](https://nodejs.org/), [Java](https://www.oracle.com/java/) で書かれたものと同じ HTTP リクエストです。
 
@@ -121,7 +122,10 @@ try {
 }
 ```
 
-ご覧のとおり、各例では独自のプログラミング・パラダイムを使用して次のことを実行しています :
+<a name="generating-ngsi-api-clients"></a>
+## Generating NGSI API Clients
+
+上記の例からわかるように、それぞれは独自のプログラミングパラダイムを使用して次のことを行います :
 
 * 適格な URL を作成します
 * HTTP GET リクエストを作成します
@@ -131,6 +135,15 @@ try {
 
 このような定型コードは頻繁に再利用されるため、通常はライブラリ内に隠されています。
 
+[`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) ツールは、[NGSI v2 Swagger Specification](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) から直接様々なプログラミング言語で定型 API クライアント・ライブラリを生成することができます。
+
+```console
+swagger-codegen generate \
+  -l javascript \
+  -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json
+```
+
+生成されたクライアントは、独自のアプリケーション内のコードで使用できます。
 
 <a name="the-teaching-goal-of-this-tutorial"></a>
 ## このチュートリアルの目標
@@ -162,12 +175,12 @@ try {
 
 したがって、アーキテクチャは4つの要素で構成されます :
 
-* [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信する Orion Context Broker サーバ
+* [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信する Orion Context Broker サーバ
 * Orion Context Broker サーバに関連付けられている MongoDB データベース
 * コンテキスト・プロバイダ NGSI プロキシは次のようになります :
-    + [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信します
+    + [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) を使用してリクエストを受信します
     + 独自の API を独自のフォーマットで使用して、公開されているデータソースへのリクエストを行います
-    + [NSGI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 形式でコンテキスト・データを Orion Context Broker に返します
+    + [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) 形式でコンテキスト・データを Orion Context Broker に返します
 * 在庫管理フロントエンドは以下を行います : 
     + ストア情報を表示します
     + 各ストアで購入できる製品を表示します
@@ -234,7 +247,7 @@ try {
 <a name="stock-management-frontend"></a>
 ## NGSI v2 npm ライブラリ
 
-NGSI v2 互換の [npm ライブラリ](https://github.com/smartsdk/ngsi-sdk-javascript) は、[SmartSDK](https://www.smartsdk.eu/) チームによって開発されました 。これは、低レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラリであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は、次の名前のNGSI v2 [CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に直接マッピングされます :
+Swagger が生成した NGSI v2 クライアント [npm ライブラリ](https://github.com/smartsdk/ngsi-sdk-javascript) は、[SmartSDK](https://www.smartsdk.eu/) チームによって開発されました 。これは、低レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラリであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は、次の名前のNGSI v2 [CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に直接マッピングされます :
 
 | HTTP Verb   | `/v2/entities`  | `/v2/entities/<entity>`  |
 |-----------  |:--------------: |:-----------------------: |
