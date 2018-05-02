@@ -1,0 +1,495 @@
+![FIWARE Banner](https://fiware.github.io/tutorials.Accessing-Context/img/fiware.png)
+
+このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。
+
+このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
+
+このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fb5f564d9bc65fc3690e)
+
+# 内容
+
+- [コンテキスト・データへのアクセス](#accessing-the-context-data)
+  * [任意の言語で HTTP リクエストを作成](#making-http-requests-in-the-language-of-your-choice)
+  * [このチュートリアルの目標](#the-teaching-goal-of-this-tutorial)
+  * [在庫管理システム内のエンティティ](#entities-within-a-stock-management-system)
+- [アーキテクチャ](#architecture)
+- [前提条件](#prerequisites)
+  * [Docker](#docker)
+  * [Cygwin](#cygwin)
+- [起動](#start-up)
+- [在庫管理フロントエンド](#stock-management-frontend)
+  * [NGSI v2 npm ライブラリ](#ngsi-v2-npm-library)
+  * [コードの分析](#analysing-the-code)
+    + [ライブラリの初期化](#initializing-the-library)
+    + [ストアのデータを読む](#reading-store-data)
+    + [製品と在庫アイテムの集約](#aggregating-products-and-inventory-items)
+    + [コンテキストの更新](#updating-context)
+
+<a name="accessing-the-context-data"></a>
+# コンテキスト・データへのアクセス
+
+一般的なスマートなソリューションでは、CRM システム、ソーシャルネットワーク、モバイルアプリ、IoT センサーなどの、さまざまなソースからコンテキスト・データを取得し、適切なビジネス・ロジックを決定するために、コンテキストをプログラムで分析します。例えば、在庫管理のデモでは、アプリケーションは、各アイテムに支払われた価格が常に、**Product** エンティティ内に保持されている現在の価格を反映するようにする必要があります。動的システムでは、アプリケーションは現在のコンテキストを修正できる必要もあります。例えば、データの作成または更新、またはセンサーのアキュレートです。
+
+一般的には、以下の3つの基本シナリオが定義されています :
+
+* データの読み込み - 例えば、**Store** エンティティ `urn:ngsi-ld:Store:001` のすべてのデータを取得
+* 集約 - 例えば Store `urn:ngsi-ld:Store:001` の **InventoryItems** エンティティを、販売する **Product** エンティティの名前と価格と組み合わせる
+* コンテキストを変更 - 例えば、製品を販売します : 
+    + 日々の販売記録を **Product** の価格で更新します
+    + **InventoryItem** エンティティの `shelfCount` を減らします
+    + 販売が発生したことを示す、新しいトランザクション・ログレコードを作成します
+    + 販売されているオブジェクトが10個未満の場合は、倉庫で警告を発します
+    + など
+
+ご覧のように、コンテキストにアクセス/修正する各リクエストの背後にあるビジネス・ロジックは、ビジネスニーズに応じて単純なものから複雑なものまでさまざまです。
+
+
+<a name="making-http-requests-in-the-language-of-your-choice"></a>
+## 任意の言語で HTTP リクエストを作成
+
+[NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) の仕様では、HTTP 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがって、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語でもアクセスできます。
+
+例えば、[PHP](https://secure.php.net/), [Node.js](https://Node.js.org/), [Java](https://www.oracle.com/java/) で書かれたものと同じ HTTP リクエストです。
+
+
+#### PHP (with `HTTPRequest`)
+
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001');
+$request->setMethod(HTTP_METH_GET);
+
+$request->setQueryData(array(
+  'options' => 'keyValues'
+));
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+
+
+#### Node.js (with `request` library)
+
+```javascript
+const request = require("request");
+
+const options = { method: 'GET',
+  url: 'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001',
+  qs: { options: 'keyValues' }};
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+  console.log(body);
+});
+```
+
+
+#### Java (with `CloseableHttpClient` library)
+
+```java
+CloseableHttpClient httpclient = HttpClients.createDefault();
+try {
+    HttpGet httpget = new HttpGet("http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues");
+
+    ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+        @Override
+        public String handleResponse(
+                final HttpResponse response) throws ClientProtocolException, IOException {
+            int status = response.getStatusLine().getStatusCode();
+            if (status >= 200 && status < 300) {
+                HttpEntity entity = response.getEntity();
+                return entity != null ? EntityUtils.toString(entity) : null;
+            } else {
+                throw new ClientProtocolException("Unexpected response status: " + status);
+            }
+        }
+
+    };
+    String body = httpclient.execute(httpget, responseHandler);
+    System.out.println(body);
+} finally {
+    httpclient.close();
+}
+```
+
+ご覧のとおり、各例では独自のプログラミング・パラダイムを使用して次のことを実行しています :
+
+* 適格な URL を作成します
+* HTTP GET リクエストを作成します
+* レスポンスを取得します
+* エラー状態をチェックし、必要に応じて例外をスローします
+* さらなる処理のためにリクエストのボディを返します
+
+このような定型コードは頻繁に再利用されるため、通常はライブラリ内に隠されています。
+
+
+<a name="the-teaching-goal-of-this-tutorial"></a>
+## このチュートリアルの目標
+
+このチュートリアルの狙いは、一般的なデータアクセスのシナリオをカバーする一連の汎用コードの例を定義し、議論することによって、コンテキスト・データのプログラムによるアクセスについて開発者の理解を向上させることです。この目的のために、簡単な Node.js Express アプリケーションを作成します。
+
+ここでの意図は、Express でアプリケーションを書く方法をユーザに教えることではなく、実際にはどの言語を選択してもかまいません。ビジネス・ロジックの目標を達成するために、**任意の**サンプル・プログラミング言語を使用して、どのようにしてコンテキストを変更するかを示すだけです。
+
+明らかに、プログラミング言語の選択は、あなた自身のビジネス・ニーズに依存します。下記のコードを読んで、Node.js を適切な独自のプログラミング言語で置き換えてください。
+
+
+<a name="entities-within-a-stock-management-system"></a>
+## 在庫管理システム内のエンティティ
+
+エンティティ間の関係は、次のように定義されます :
+
+![](https://fiware.github.io/tutorials.Accessing-Context/img/entities.svg)
+
+青色で強調表示された項目は、外部のコンテキスト・プロバイダによって提供されます。
+
+**Store**, **Product** および **InventoryItem** エンティティは、デモ・アプリケーションのフロントエンドにデータを表示するために使用されます。
+
+<a name="architecture"></a>
+# アーキテクチャ
+
+このアプリケーションは、[Orion Context Broker](https://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker) という1つの FIWARE コンポーネントのみを使用します。アプリケーションが *"Powered by FIWARE"* と認定するには、Orion Context Broker を使用するだけで十分です。
+
+現在、Orion Context Broker はオープンソースの [MongoDB](https://www.mongodb.com/) 技術を利用して、コンテキスト・データの永続性を維持しています。外部ソースからコンテキスト・データをリクエストするために、単純なコンテキスト・プロバイダ NGSI プロキシも追加されています。コンテキストを視覚化して操作するために、簡単な Express アプリケーションを追加します。
+
+したがって、アーキテクチャは4つの要素で構成されます :
+
+* [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) を使用してリクエストを受信する Orion Context Broker サーバ
+* Orion Context Broker サーバに関連付けられている MongoDB データベース
+* コンテキスト・プロバイダ NGSI プロキシは次のようになります :
+    + [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) を使用してリクエストを受信します
+    + 独自の API を独自のフォーマットで使用して、公開されているデータソースへのリクエストを行います
+    + [NGSI](http://fiware.github.io/specifications/ngsiv2/latest/) 形式でコンテキスト・データを Orion Context Broker に返します
+* 在庫管理フロントエンドは以下を行います : 
+    + ストア情報を表示します
+    + 各ストアで購入できる製品を表示します
+    + ユーザが製品を"購入"して、在庫数を減らすことを可能にします
+
+要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコンテナ化され、公開されたポートから実行されます。
+
+![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.svg)
+
+<a name="prerequisites"></a>
+# 前提条件
+
+<a name="docker"></a>
+## Docker
+
+物事を単純にするために、両方のコンポーネントが [Docker](https://www.docker.com) を使用して実行されます。**Docker** は、さまざまコンポーネントをそれぞれの環境に分離することを可能にするコンテナ・テクノロジです。
+
+* Docker を Windows にインストールするには、[こちら](https://docs.docker.com/docker-for-windows/)の手順に従ってください
+* Docker を Mac にインストールするには、[こちら](https://docs.docker.com/docker-for-mac/)の手順に従ってください
+* Docker を Linux にインストールするには、[こちら](https://docs.docker.com/install/)の手順に従ってください
+
+**Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行するためのツールです。[YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Getting-Started/master/docker-compose.yml) ファイルは、アプリケーションのために必要なサービスを設定する使用されています。つまり、すべてのコンテナ・サービスは1つのコマンドで呼び出すことができます。Docker Compose は、デフォルトで Docker for Windows とD ocker for Mac の一部としてインストールされますが、Linux ユーザは[ここ](https://docs.docker.com/compose/install/)に記載されている手順に従う必要があります。
+
+<a name="cygwin"></a>
+## Cygwin 
+
+シンプルな bash スクリプトを使用してサービスを開始します。Windows ユーザは [cygwin](http://www.cygwin.com/) をダウンロードして、Windows 上の Linux ディストリビューションと同様のコマンドライン機能を提供する必要があります。
+
+<a name="start-up"></a>
+# 起動
+
+リポジトリ内で提供される bash スクリプトを実行すると、コマンドラインからすべてのサービスを初期化できます :
+
+```console
+./services create; ./services start;
+```
+
+このコマンドは、起動時に以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers)からシードデータをインポートします。
+
+>:information_source: **注 :** クリーンアップをやり直したい場合は、次のコマンドを使用して再起動することができます :
+>
+>```console
+>./services stop
+>``` 
+>
+
+<a name="stock-management-frontend"></a>
+# 在庫管理フロントエンド 
+
+デモ用の Node.js Express のすべてのコードは、GitHubリポジトリ内の `proxy` フォルダ内にあります。[在庫管理の例](https://github.com/Fiware/tutorials.Accessing-Context/tree/master/proxy)。アプリケーションは次の URLs で実行されます :
+
+
+* `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
+* `http://localhost:3000/app/store/urn:ngsi-ld:Store:002`
+* `http://localhost:3000/app/store/urn:ngsi-ld:Store:003`
+* `http://localhost:3000/app/store/urn:ngsi-ld:Store:004`
+
+
+>:information_source: **ヒント** : さらに、コンテナのログに従うか、Webブラウザ上で `localhost:3000/app/monitor` の情報を表示することで、最近のリクエストの状況を自分で見ることができます。
+>
+>![FIWARE Monitor](https://fiware.github.io/tutorials.Accessing-Context/img/monitor.png)
+
+
+<a name="stock-management-frontend"></a>
+## NGSI v2 npm ライブラリ
+
+NGSI v2 互換の [npm ライブラリ](https://github.com/smartsdk/ngsi-sdk-javascript) は、[SmartSDK](https://www.smartsdk.eu/) チームによって開発されました 。これは、低レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラリであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は、次の名前のNGSI v2 [CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に直接マッピングされます :
+
+| HTTP Verb   | `/v2/entities`  | `/v2/entities/<entity>`  |
+|-----------  |:--------------: |:-----------------------: |
+| **POST**    | [`createEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#createEntity)  | :x:  |
+| **GET**     | [`listEntities()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#listEntities) | [`retrieveEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntity)  | 
+| **PUT**     | :x:   | :x:   |
+| **PATCH**   | :x:   | :x:   |
+| **DELETE**  | :x:  | [`removeEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#removeEntity)  | 
+
+
+
+| HTTP Verb   | `.../attrs`  | `.../attrs/<attribute>`  | `.../attrs/<attribute>/value`  |
+|-----------  |:-----------: |:-----------------------: |:-----------------------------: |
+| **POST**    |  [`updateOrAppendEntityAttributes()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#updateOrAppendEntityAttributes)   | :x:   | :x:   |
+| **GET**     |  [`retrieveEntityAttributes()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntityAttributes)  | :x:   | [`getAttributeValue()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/AttributeValueApi.md#getAttributeValue)  |
+| **PUT**     |  :x:   | :x:   | [`updateAttributeValue()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/AttributeValueApi.md#updateAttributeValue)  |
+| **PATCH**   |  [`updateExistingEntityAttributes()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#updateExistingEntityAttributes) | :x:   | :x:   |
+| **DELETE**. |  :x: | `removeASingleAttribute()` | :x:  |
+
+
+<a name="analysing-the-code"></a>
+## コードの分析
+
+説明しているコードは、[Gitリポジトリ](https://github.com/Fiware/tutorials.Context-Providers/blob/master/proxy/controllers/store.js)の `store` コントローラ内にあります。
+
+<a name="initializing-the-library"></a>
+### ライブラリの初期化
+
+HTTP アクセスのための不必要な定型コードを書くのに時間を費やしたくなく、再発明したくありません。したがって、`ngsi_v2` NPM ライブラリを使用します。これは、図のようにファイルのヘッダに含める必要があります。また、`basePath` を設定する必要があります。これは Orion Context Broker の位置を定義します。
+
+```javascript
+const NgsiV2 = require('ngsi_v2');
+const defaultClient = NgsiV2.ApiClient.instance;
+defaultClient.basePath = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2';
+```
+
+<a name="reading-store-data"></a>
+### ストアのデータを読む
+
+この例では、指定された **Store** エンティティのコンテキスト・データを読み取って結果を画面に表示します。エンティティ・データの読み込みは、`apiInstance.retrieveEntity()` メソッドを使用して行うことができます。ライブラリはコールバックを使用するため、以下のような `Promise` 関数でラップされています。ライブラリ関数 `apiInstance.retrieveEntity()` は、GET リクエストの URL を記入し、必要な HTTP 呼び出しを行います :
+
+```javascript
+function retrieveEntity(entityId, opts) {
+	return new Promise(function(resolve, reject) {
+		const apiInstance = new NgsiV2.EntitiesApi();
+		apiInstance.retrieveEntity(entityId, opts, (error, data) => {
+			return error ? reject(error) : resolve(data);
+		});
+	});
+}
+```
+
+
+これにより、次のように `Promises` の中でリクエストをラップすることができます :
+
+```javascript
+function displayStore(req, res) {
+	retrieveEntity(
+		req.params.storeId, { options: 'keyValues', type: 'Store' })
+	.then(store => {
+		// If a store has been found display it on screen
+		return res.render('store', { title: store.name, store});
+	})
+	.catch(error => {
+		debug(error);
+		// If no store has been found, display an error screen
+  		return res.render('store-error', {title: 'Error', error});
+	});
+}
+```
+
+これは間接的にHTTP GETリクエストを `http://localhost:1026/v2/entities/<store-id>?type=Store&options=keyValues` に行うことです。着信リクエストで Store URN を再利用することに注意してください。
+
+同等の cUrl コマンドは次のようになります :
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+```
+
+レスポンスは以下のようになります :
+
+```json
+{
+    "id": "urn:ngsi-ld:Store:001",
+    "type": "Store",
+    "address": {
+        "streetAddress": "Bornholmer Straße 65",
+        "addressRegion": "Berlin",
+        "addressLocality": "Prenzlauer Berg",
+        "postalCode": "10439"
+    },
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            13.3986,
+            52.5547
+        ]
+    },
+    "name": "Bösebrücke Einkauf"
+}
+```
+
+次に、HTTP レスポンスのボディからのストアのデータが PUG レンダリング・エンジンに渡され、以下に示すように画面に表示されます :
+
+#### `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
+
+![Store 1](https://fiware.github.io/tutorials.Accessing-Context/img/store.png)
+
+効率を上げるためには、ネットワーク・トラフィックを削減するためにできるだけ少ない属性をリクエストすることが重要です。この最適化はまだコードでは行われていません。
+
+コンテキスト・データが使用できない場合、たとえば、ユーザが存在しないストアをクエリする場合などには、エラー・ハンドラが必要です。次のようにエラー・ページに転送されます :
+
+#### `http://localhost:3000/app/store/urn:ngsi-ld:Store:005`
+
+![Store 5](https://fiware.github.io/tutorials.Accessing-Context/img/store-error.png)
+
+同等の cUrl コマンドは次のようになります :
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?options=keyValues'
+```
+
+次のように、レスポンスのステータスは、**404 Not Found** になります :
+
+```json
+{
+    "error": "NotFound",
+    "description": "The requested entity has not been found. Check type and id"
+}
+```
+
+`catch` メソッド内の `error` オブジェクトは、エラー・レスポンスを保持します。これは、フロントエンドに表示されます。
+
+<a name="aggregating-products-and-inventory-items"></a>
+### 製品と在庫アイテムの集約
+
+この例では、指定されたストアの現在の **InventoryItem** エンティティのコンテキスト・データを読み取り、その情報を **Product** エンティティの価格と組み合わせます。結果は手元現金に表示される情報です。
+
+![Till](https://fiware.github.io/tutorials.Accessing-Context/img/till.png)
+
+`Promise` チェーンを作成するか `Promise.all` を使用して、複数のエンティティをリクエストして集約できます。ここで、**Product** メソッド および **InventoryItems** エンティティは、`apiInstance.listEntities()` ライブラリメソッドを使用してリクエストされています。リクエスト内に `q` パラメータが存在すると、受信したエンティティのリストがフィルタリングされます。
+
+
+```javascript
+function displayTillInfo(req, res) {
+	Promise.all([ 
+		listEntities({
+		options: 'keyValues',
+		type: 'Product',
+	}), listEntities({
+		q: 'refStore==' + req.params.storeId,
+		options: 'keyValues',
+		type: 'InventoryItem',
+	})])
+	.then(values => {
+		// If values have been found display it on screen
+		return res.render('till', { products : values[0], inventory : values[1] });
+	})
+	.catch(error => {
+		debug(error);
+		// An error occurred, return with no results
+		return res.render('till', { products : {}, inventory : {}});
+	});
+}
+
+
+function listEntities(opts) {
+	return new Promise(function(resolve, reject) {
+		const apiInstance = new NgsiV2.EntitiesApi();
+		apiInstance.listEntities(opts, (error, data) => {
+			return error ? reject(error) : resolve(data);
+		});
+	});
+}
+```
+
+
+
+結果を集約するために使用されるコード(在庫が揃っている各アイテムの製品名を表示)は、フロントエンドで `mixin` に委託されています。集約されたデータを別のコンポーネントに渡す場合、外部キー集約(`item.refProduct === product.id`)が Node.js コードに追加されている可能性があります :
+
+```pug
+mixin product(item, products)
+  each product in products
+    if (item.refProduct === product.id)
+      span(id=`${product.id}`)
+        strong
+          | #{product.name}
+
+        | &nbsp; @ #{product.price /100} &euro; each
+        | - #{item.shelfCount} in stock
+        |
+
+```
+
+
+Orion Context Broker への HTTP リクエストのいずれかが失敗した場合、空の製品リストが返されるようにエラーハンドラが作成されました。
+
+リクエストごとに **Product** エンティティの完全なリストを取得することは効率的ではありません。キャッシュから製品のリストをロードし、価格が変更された場合にのみリストを更新する方がよいでしょう。これは、後続のチュートリアルの主題である NGSI サブスクリプション・メカニズムを使用して実現できます。
+
+これは、次の cURL コマンド(ビジネス・ロジックを加えたもの)と同等です。
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/?type=Product&options=keyValues'
+curl -X GET \
+  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'  
+```
+
+<a name="updating-context"></a>
+### コンテキストの更新
+
+アイテムを購入すると、棚に残されたアイテムの数が減ることになります。この例は2つのリンクされたリクエストで構成されています。**InventoryItem** エンティティ・データの読み取りは、前述のように `apiInstance.retrieveEntity()` メソッドを使用して行うことができます。`apiInstance.updateExistingEntityAttributes()` メソッドを使用して Orion Context Broker に送信される前に、データはメモリ内で修正されます 。これは事実上、更新される要素を含むボディを持つ `http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem` への HTTP PATCH リクエストを囲むラッパーです。この機能にはエラー処理がありません。ルータの機能に委ねられています。
+
+
+```javascript
+async function buyItem(req, res) {
+	const inventory = await retrieveEntity(req.params.inventoryId, {
+		options: 'keyValues',
+		type: 'InventoryItem',
+	});
+	const count = inventory.shelfCount - 1;
+	await updateExistingEntityAttributes(
+		req.params.inventoryId,
+		{ shelfCount: { type: 'Integer', value: count } },
+		{
+			type: 'InventoryItem',
+		}
+	);
+	res.redirect(`/app/store/${inventory.refStore}/till`);
+}
+
+function updateExistingEntityAttributes(entityId, body, opts) {
+	return new Promise(function(resolve, reject) {
+		const apiInstance = new NgsiV2.EntitiesApi();
+		apiInstance.updateExistingEntityAttributes(entityId, body, opts, (error, data) => {
+			return error ? reject(error) : resolve(data);
+		});
+	});
+}
+```
+
+
+状況の変化がアトミックに確実に行われるように、コンテキストを修正するときは注意が必要です。Node.JS ではシングル・スレッドであるため、これは問題ではありません。各リクエストは1つずつリクエストを実行します。しかし、Java などのマルチスレッド環境では、2つの購入リクエストを同時に処理することができます。つまり、リクエストがインターリーブされた場合、`shelfCount` が1回だけ削減されます。この問題は、監視メカニズムを使用することで解決できます。
+
+これは、次の cURL コマンド(ビジネス・ロジックを加えたもの)と同等です。
+
+```console
+curl -X GET \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:001/attrs/shelfCount/value'
+curl -X PATCH \
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
+  -H 'Content-Type: application/json' \
+  -d '{ "shelfCount": 
+  { "type": "Integer", "value": "13" } 
+}'
+```
