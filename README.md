@@ -214,7 +214,7 @@ will need to follow the instructions found  [here](https://docs.docker.com/compo
 
 ## Cygwin 
 
-We will start up our services using a simple bash script. Windows users should download [cygwin](www.cygwin.com) to provide a
+We will start up our services using a simple bash script. Windows users should download [cygwin](http://www.cygwin.com/) to provide a
 command line functionality similar to a Linux distribution on Windows. 
 
 # Start Up
@@ -409,7 +409,7 @@ the cash till.
 
 ![Till](https://fiware.github.io/tutorials.Accessing-Context/img/till.png)
 
-Multiple entities can be requested and aggregated by creating a `Promise` chain or by usign `Promise.all`. 
+Multiple entities can be requested and aggregated by creating a `Promise` chain or by using `Promise.all`. 
 Here the **Product**  and **InventoryItems** entities have been requested using the `apiInstance.listEntities()` 
 library method. The presence of the `q` parameter in the request will filter the list of entities received. 
 
