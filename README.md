@@ -13,6 +13,8 @@ results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman 
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fb5f564d9bc65fc3690e)
 
+* このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
+
 # Contents
 
 - [Accessing the Context Data](#accessing-the-context-data)
