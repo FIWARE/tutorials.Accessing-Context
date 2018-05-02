@@ -11,7 +11,7 @@ data. This removes the need to use the command line to invoke cUrl commands.
 The tutorial is mainly concerned with discussing code written in Node.js, however some of the
 results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman documentation](http://fiware.github.io/tutorials.Accessing-Context/) for the same commands is also available.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fb5f564d9bc65fc3690e)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
 
 * このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 

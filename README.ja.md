@@ -6,7 +6,7 @@
 
 このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://www.getpostman.com/collections/fb5f564d9bc65fc3690e)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
 
 # 内容
 
