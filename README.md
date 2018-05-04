@@ -148,7 +148,13 @@ As you can see from the examples above, each one uses their own programming para
 
 Since such boilerplate code is frequently re-used it is usually hidden within a library. 
 
-The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NGSI v2 Swagger Specification](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NGSI v2 Swagger Specification](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json). Currently `swagger-codegen` will generate code for the following languages:
+
+* ActionScript, Ada, Apex, Bash, C#, C++, Clojure, Dart, Elixir, Elm, Eiffel, Erlang, Go, Groovy, 
+  Haskell, Java, Kotlin, Lua, Node.js, Objective-C, Perl, PHP, PowerShell, Python, R, Ruby, Rust, Scala,
+  Swift, Typescript
+
+For example the command:
 
 ```console
 swagger-codegen generate \
@@ -156,7 +162,20 @@ swagger-codegen generate \
   -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json 
 ```
 
-The generated client can then be used by the code within your own application.
+Will generate a default ES5 npm package for NGSI v2 directly from the current specification.
+
+Additional information can be found by running
+
+```console
+swagger-codegen help generate
+````
+
+With information about the customization switches available for a specific language found by running
+
+```console
+swagger-codegen config-help -l <language-name>
+````
+
 
 ## The teaching goal of this tutorial
 
