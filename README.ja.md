@@ -162,7 +162,7 @@ swagger-codegen generate \
 
 エンティティ間の関係は、次のように定義されます :
 
-![](https://fiware.github.io/tutorials.Accessing-Context/img/entities.svg)
+![](https://fiware.github.io/tutorials.Accessing-Context/img/entities.png)
 
 青色で強調表示された項目は、外部のコンテキスト・プロバイダによって提供されます。
 

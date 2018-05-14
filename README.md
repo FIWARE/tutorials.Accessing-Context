@@ -196,9 +196,7 @@ below please keep this in mind and substitute Node.js with your own programming 
 
 The relationship between our entities is defined as shown:
 
-![](https://fiware.github.io/tutorials.Accessing-Context/img/entities.svg)
-
-The items highlighted in blue are provided by the external context providers. 
+![](https://fiware.github.io/tutorials.Accessing-Context/img/entities.png)
 
 The **Store**, **Product** and **InventoryItem** entities will be used to display data on the front-end of our demo application.
 
