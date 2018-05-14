@@ -2,8 +2,7 @@
 
 [![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
 
-This tutorial teaches FIWARE users how to alter the context programmatically
-
+This tutorial teaches FIWARE users how to alter the context programmatically.
 The tutorial builds on the  entities created in the previous 
 [stock management example](https://github.com/Fiware/tutorials.Context-Providers/)
 and enables a user understand how to write code in an [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
