@@ -1,5 +1,7 @@
 ![FIWARE Banner](https://fiware.github.io/tutorials.Accessing-Context/img/fiware.png)
 
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
+
 This tutorial teaches FIWARE users how to alter the context programmatically
 
 The tutorial builds on the  entities created in the previous 
