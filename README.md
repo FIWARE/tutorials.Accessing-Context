@@ -5,7 +5,7 @@
 This tutorial teaches FIWARE users how to alter the context programmatically.
 The tutorial builds on the  entities created in the previous 
 [stock management example](https://github.com/Fiware/tutorials.Context-Providers/)
-and enables a user understand how to write code in an [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+and enables a user understand how to write code in an [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
 capable [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context 
 data. This removes the need to use the command line to invoke cUrl commands.
 
@@ -64,7 +64,7 @@ depending upon business needs.
 
 ## Making HTTP Requests in the language of your choice
 
-The [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests. 
+The [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests. 
 
 Here for example is the same HTTP request written in [PHP](https://secure.php.net/), [Node.js](https://Node.js.org/) and [Java](https://www.oracle.com/java/)
 
@@ -149,7 +149,7 @@ As you can see from the examples above, each one uses their own programming para
 
 Since such boilerplate code is frequently re-used it is usually hidden within a library. 
 
-The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NGSI v2 Swagger Specification](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json). Currently `swagger-codegen` will generate code for the following languages:
+The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NGSI v2 Swagger Specification](https://fiware.github.io/specifications/OpenAPI/ngsiv2). Currently `swagger-codegen` will generate code for the following languages:
 
 * ActionScript, Ada, Apex, Bash, C#, C++, Clojure, Dart, Elixir, Elm, Eiffel, Erlang, Go, Groovy, 
   Haskell, Java, Kotlin, Lua, Node.js, Objective-C, Perl, PHP, PowerShell, Python, R, Ruby, Rust, Scala,
@@ -202,7 +202,7 @@ The **Store**, **Product** and **InventoryItem** entities will be used to displa
 
 # Architecture
 
-This application will make use of only one FIWARE component - the [Orion Context Broker](https://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker). Usage of the Orion Context Broker is sufficient for an application to qualify as *“Powered by FIWARE”*.
+This application will make use of only one FIWARE component - the [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/). Usage of the Orion Context Broker is sufficient for an application to qualify as *“Powered by FIWARE”*.
 
 Currently, the Orion Context Broker relies on open source [MongoDB](https://www.mongodb.com/) technology to keep
 persistence of the context data it holds. To request context data from external sources, a simple Context Provider NGSI 
@@ -211,12 +211,12 @@ proxy has also been added. To visualise and interact with the Context we will ad
 
 Therefore, the architecture will consist of four elements:
 
-* The Orion Context Broker server which will receive requests using [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+* The [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
 * The underlying MongoDB database associated to the Orion Context Broker server
 * The Context Provider NGSI proxy which will will:
-  + receive requests using [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+  + receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
   + makes requests to publicly available data sources using their own APIs in a proprietory format 
-  + returns context data back to the Orion Context Broker in [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json) format.
+  + returns context data back to the Orion Context Broker in [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
 * The Stock Management Frontend which will will:
   + Display store information
   + Show which products can be bought at each store
