@@ -169,14 +169,13 @@ Additional information can be found by running
 
 ```console
 swagger-codegen help generate
-````
+```
 
 With information about the customization switches available for a specific language found by running
 
 ```console
 swagger-codegen config-help -l <language-name>
-````
-
+```
 
 ## The teaching goal of this tutorial
 
@@ -211,13 +210,14 @@ proxy has also been added. To visualise and interact with the Context we will ad
 
 Therefore, the architecture will consist of four elements:
 
-* The [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
-* The underlying MongoDB database associated to the Orion Context Broker server
-* The Context Provider NGSI proxy which will will:
+* The [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
+* The underlying [MongoDB](https://www.mongodb.com/) database :
+  + Used by the Orion Context Broker to hold context data information such as data entities, subscriptions and registrations
+* The **Context Provider NGSI** proxy which will will:
   + receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
   + makes requests to publicly available data sources using their own APIs in a proprietory format 
   + returns context data back to the Orion Context Broker in [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
-* The Stock Management Frontend which will will:
+* The **Stock Management Frontend** which will will:
   + Display store information
   + Show which products can be bought at each store
   + Allow users to "buy" products and reduce the stock count.
@@ -578,7 +578,8 @@ You can find out by reading the other tutorials in this series:
 &nbsp; 105. [Altering the Context Programmatically](https://github.com/Fiware/tutorials.Accessing-Context/)<br/> 
 &nbsp; 106. [Subscribing to Changes in Context](https://github.com/Fiware/tutorials.Subscriptions/)<br/>
 
-&nbsp; 201. [Introduction to IoT Sensors](https://github.com/Fiware/tutorials.IoT-Sensors/)<br/> 
+&nbsp; 201. [Introduction to IoT Sensors](https://github.com/Fiware/tutorials.IoT-Sensors/)<br/>
+&nbsp; 202. [Provisioning an IoT Agent](https://github.com/Fiware/tutorials.IoT-Agent/)<br/>
 
 
 
