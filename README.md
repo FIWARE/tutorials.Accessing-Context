@@ -30,7 +30,7 @@ results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman 
 - [Start Up](#start-up)
 - [Stock Management Frontend](#stock-management-frontend)
   * [NGSI v2 npm library](#ngsi-v2-npm-library)
-  * [Analysing the Code](#analysing-the-code)
+  * [Analyzing the Code](#analyzing-the-code)
     + [Initializing the library](#initializing-the-library)
     + [Reading Store Data](#reading-store-data)
     + [Aggregating Products and Inventory Items](#aggregating-products-and-inventory-items)
@@ -40,10 +40,10 @@ results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman 
 # Accessing the Context Data 
 
 For a typical smart solution you will be retrieving context data from diverse sources (such as a CRM system, social
-networks, mobile apps or IoT sensors for example) and then analysing the context programmatically to make appropriate
+networks, mobile apps or IoT sensors for example) and then analyzing the context programmatically to make appropriate
 business logic decisions. For example in the stock management demo, the application will need to ensure that the prices
 paid for each item always reflect the current price held within the **Product** entity. For a dynamic system, the 
-application will also need to be able to amend the current context. (e.g. creating or updating data or accuating a sensor
+application will also need to be able to amend the current context. (e.g. creating or updating data or actuating a sensor
 for example)
 
 In general terms, three basic scenarios are defined below:
@@ -205,7 +205,7 @@ This application will make use of only one FIWARE component - the [Orion Context
 
 Currently, the Orion Context Broker relies on open source [MongoDB](https://www.mongodb.com/) technology to keep
 persistence of the context data it holds. To request context data from external sources, a simple Context Provider NGSI 
-proxy has also been added. To visualise and interact with the Context we will add a simple Express application 
+proxy has also been added. To visualize and interact with the Context we will add a simple Express application 
 
 
 Therefore, the architecture will consist of four elements:
@@ -243,8 +243,8 @@ which allows to different components isolated into their respective environments
 
 **Docker Compose** is a tool for defining and running multi-container Docker applications. A 
 [YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Entity-Relationships/master/docker-compose.yml) is used
-configure the required services for the application. This means all container sevices can be brought up in a single 
-commmand. Docker Compose is installed by default  as part of Docker for Windows and  Docker for Mac, however Linux users 
+configure the required services for the application. This means all container services can be brought up in a single 
+command. Docker Compose is installed by default  as part of Docker for Windows and  Docker for Mac, however Linux users 
 will need to follow the instructions found  [here](https://docs.docker.com/compose/install/)
 
 ## Cygwin 
@@ -254,7 +254,7 @@ command line functionality similar to a Linux distribution on Windows.
 
 # Start Up
 
-All services can be initialised from the command line by running the bash script provided within the repository:
+All services can be initialized from the command line by running the bash script provided within the repository:
 
 ```console
 ./services create; ./services start;
@@ -313,14 +313,14 @@ with the following names:
 | **DELETE**. |  :x: | `removeASingleAttribute()` | :x:  |
 
 
-## Analysing the Code
+## Analyzing the Code
 
 The code under discussion can be found within the `store` controller in the [Git Repository](https://github.com/Fiware/tutorials.Context-Providers/blob/master/proxy/controllers/store.js)
 
 ### Initializing the library
 
 We don't want to reinvent the wheel and spend time writing a unnecessary boilerplate code for HTTP access. Therefore
-we will use the exising `ngsi_v2`  NPM library. This needs to be included in the header of the file as shown. The
+we will use the existing `ngsi_v2`  NPM library. This needs to be included in the header of the file as shown. The
 `basePath` must also be set - this defines the location of the Orion Context Broker. 
 
 ```javascript
@@ -520,7 +520,7 @@ curl -X GET \
 
 Buying an item will involve decrementing the number of items left on a shelf. The example consists of two linked requests.
 The reading of the **InventoryItem** entity data can be done using the `apiInstance.retrieveEntity()` method as shown 
-previously. The data is then ammended  in memory before being sent to the Orion Context Broker using the 
+previously. The data is then amended  in memory before being sent to the Orion Context Broker using the 
 `apiInstance.updateExistingEntityAttributes()` method.  This is effectively just a wrapper around an HTTP PATCH request to
 `http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem`, with a body containing the elements to be updated.
 There is no error handling on this function, it has been left to a function on the router.
