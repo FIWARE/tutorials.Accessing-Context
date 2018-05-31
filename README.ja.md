@@ -190,7 +190,7 @@ swagger-codegen generate \
 
 要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコンテナ化され、公開されたポートから実行されます。
 
-![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.svg)
+![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.png)
 
 <a name="prerequisites"></a>
 # 前提条件
