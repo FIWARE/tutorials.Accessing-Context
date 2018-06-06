@@ -2,9 +2,7 @@
 
 [![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
 
-このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。
-
-このチュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
+このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。チュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
 
 このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
 
@@ -29,6 +27,7 @@
     + [ストアのデータを読む](#reading-store-data)
     + [製品と在庫アイテムの集約](#aggregating-products-and-inventory-items)
     + [コンテキストの更新](#updating-context)
+- [次のステップ](#next-steps)
 
 <a name="accessing-the-context-data"></a>
 # コンテキスト・データへのアクセス
@@ -137,7 +136,11 @@ try {
 
 このような定型コードは頻繁に再利用されるため、通常はライブラリ内に隠されています。
 
-[`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) ツールは、[NGSI v2 Swagger Specification](https://fiware.github.io/specifications/OpenAPI/ngsiv2) から直接様々なプログラミング言語で定型 API クライアント・ライブラリを生成することができます。
+[`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) ツールは、[NGSI v2 Swagger Specification](https://fiware.github.io/specifications/OpenAPI/ngsiv2) から直接様々なプログラミング言語で定型 API クライアント・ライブラリを生成することができます。現在、`swagger-codegen` は以下の言語のコードを生成します :
+
+* ActionScript, Ada, Apex, Bash, C#, C++, Clojure, Dart, Elixir, Elm, Eiffel, Erlang, Go, Groovy, Haskell, Java, Kotlin, Lua, Node.js, Objective-C, Perl, PHP, PowerShell, Python, R, Ruby, Rust, Scala, Swift, Typescript
+
+たとえば、次のコマンドを実行します :
 
 ```console
 swagger-codegen generate \
@@ -145,7 +148,19 @@ swagger-codegen generate \
   -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json
 ```
 
-生成されたクライアントは、独自のアプリケーション内のコードで使用できます。
+現在の仕様から NGSI v2 用のデフォルト ES5 npm パッケージを直接生成します。
+
+追加情報は実行時に見つけることができます
+
+```console
+swagger-codegen help generate
+```
+
+実行すると特定の言語で使用できるカスタマイズ・スイッチに関する情報が表示されます
+
+```console
+swagger-codegen config-help -l <language-name>
+```
 
 <a name="the-teaching-goal-of-this-tutorial"></a>
 ## このチュートリアルの目標
@@ -171,19 +186,20 @@ swagger-codegen generate \
 <a name="architecture"></a>
 # アーキテクチャ
 
-このアプリケーションは、[Orion Context Broker](https://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker) という1つの FIWARE コンポーネントのみを使用します。アプリケーションが *"Powered by FIWARE"* と認定するには、Orion Context Broker を使用するだけで十分です。
+このアプリケーションは、[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) という1つの FIWARE コンポーネントのみを使用します。アプリケーションが *"Powered by FIWARE"* と認定するには、Orion Context Broker を使用するだけで十分です。
 
 現在、Orion Context Broker はオープンソースの [MongoDB](https://www.mongodb.com/) 技術を利用して、コンテキスト・データの永続性を維持しています。外部ソースからコンテキスト・データをリクエストするために、単純なコンテキスト・プロバイダ NGSI プロキシも追加されています。コンテキストを視覚化して操作するために、簡単な Express アプリケーションを追加します。
 
 したがって、アーキテクチャは4つの要素で構成されます :
 
 * [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信する Orion Context Broker サーバ
-* Orion Context Broker サーバに関連付けられている MongoDB データベース
-* コンテキスト・プロバイダ NGSI プロキシは次のようになります :
+* バックエンドの [MongoDB](https://www.mongodb.com/) データベース
+  + Orion Context Broker が、データ・エンティティなどのコンテキスト・データ情報、サブスクリプション、登録などを保持するために使用します
+* **コンテキスト・プロバイダ NGSI proxy** は次のようになります :
     + [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
     + 独自の API を独自のフォーマットで使用して、公開されているデータソースへのリクエストを行います
     + [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 形式でコンテキスト・データを Orion Context Broker に返します
-* 在庫管理フロントエンドは以下を行います : 
+* **在庫管理フロントエンド**は以下を行います : 
     + ストア情報を表示します
     + 各ストアで購入できる製品を表示します
     + ユーザが製品を"購入"して、在庫数を減らすことを可能にします
@@ -191,6 +207,8 @@ swagger-codegen generate \
 要素間のすべての対話は HTTP リクエストによって開始されるため、エンティティはコンテナ化され、公開されたポートから実行されます。
 
 ![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.png)
+
+必要な設定情報は、関連する `docker-compose.yml` ファイルの services セクションにあります。 [以前のチュートリアル](https://github.com/Fiware/tutorials.Context-Providers/)で説明しました。
 
 <a name="prerequisites"></a>
 # 前提条件
@@ -512,7 +530,7 @@ curl -X PATCH \
 <a name="next-steps"></a>
 # 次のステップ
 
-アドバンス機能を追加するアプリをもっと複雑にする方法を知りたいですか？ このシリーズの他のチュートリアルを読むことで、学ぶことができます。
+高度な機能を追加することで、アプリケーションに複雑さを加える方法を知りたいですか？このシリーズの他のチュートリアルを読むことで見つけることができます:
 
 &nbsp; 101. [Getting Started](https://github.com/Fiware/tutorials.Getting-Started)<br/>
 &nbsp; 102. [Entity Relationships](https://github.com/Fiware/tutorials.Entity-Relationships/)<br/>
