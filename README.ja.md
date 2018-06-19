@@ -519,7 +519,7 @@ function updateExistingEntityAttributes(entityId, body, opts) {
 ```console
 curl -X GET \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:001/attrs/shelfCount/value'
-curl -X PATCH \
+curl -iX PATCH \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
   -H 'Content-Type: application/json' \
   -d '{ "shelfCount": 
