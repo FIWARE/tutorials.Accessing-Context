@@ -254,9 +254,12 @@ command line functionality similar to a Linux distribution on Windows.
 
 # Start Up
 
-All services can be initialized from the command line by running the bash script provided within the repository:
+All services can be initialized from the command line by running the bash script provided within the repository. Please clone the repository and create the necessary images by running the commands as shown:
 
 ```console
+git clone git@github.com:Fiware/tutorials.Accessing-Context.git
+cd tutorials.Accessing-Context
+
 ./services create; ./services start;
 ```
 
@@ -374,7 +377,7 @@ The equivalent cUrl command would be as shown:
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?type=Store&options=keyValues'
 ```
 
 The response will be as shown below:
@@ -421,7 +424,7 @@ The equivalent cUrl command would be as shown:
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?options=keyValues'
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?type=Store&options=keyValues'
 ```
 
 The response has a status of **404 Not Found** with a body as shown below:
