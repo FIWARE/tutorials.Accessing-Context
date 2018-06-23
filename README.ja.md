@@ -232,9 +232,12 @@ swagger-codegen config-help -l <language-name>
 <a name="start-up"></a>
 # 起動
 
-リポジトリ内で提供される bash スクリプトを実行すると、コマンドラインからすべてのサービスを初期化できます :
+リポジトリ内で提供される bash スクリプトを実行すると、コマンドラインからすべてのサービスを初期化できます。リポジトリを複製し、以下のコマンドを実行して必要なイメージを作成してください :
 
 ```console
+git clone git@github.com:Fiware/tutorials.Accessing-Context.git
+cd tutorials.Accessing-Context
+
 ./services create; ./services start;
 ```
 
@@ -345,7 +348,7 @@ function displayStore(req, res) {
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?type=Store&options=keyValues'
 ```
 
 レスポンスは以下のようになります :
@@ -389,7 +392,7 @@ curl -X GET \
 
 ```console
 curl -X GET \
-  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?options=keyValues'
+  'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:005?type=Store&options=keyValues'
 ```
 
 次のように、レスポンスのステータスは、**404 Not Found** になります :
