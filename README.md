@@ -578,7 +578,7 @@ curl -iX PATCH \
 # Next Steps
 
 Want to learn how to add more complexity to your application by adding advanced features?
-You can find out by reading the other tutorials in this series:
+You can find out by reading the other [tutorials in this series](https://fiware-tutorials.readthedocs.io/en/latest)
 
 
 
