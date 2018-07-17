@@ -6,10 +6,10 @@
 [![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
 
 This tutorial teaches FIWARE users how to alter the context programmatically.
-The tutorial builds on the  entities created in the previous 
+The tutorial builds on the  entities created in the previous
 [stock management example](https://github.com/Fiware/tutorials.Context-Providers/)
 and enables a user understand how to write code in an [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
-capable [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context 
+capable [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context
 data. This removes the need to use the command line to invoke cUrl commands.
 
 The tutorial is mainly concerned with discussing code written in Node.js, however some of the
@@ -40,19 +40,19 @@ results can be checked by making [cUrl](https://ec.haxx.se/) commands. [Postman 
     + [Updating Context](#updating-context)
 - [Next Steps](#next-steps)
 
-# Accessing the Context Data 
+# Accessing the Context Data
 
 For a typical smart solution you will be retrieving context data from diverse sources (such as a CRM system, social
 networks, mobile apps or IoT sensors for example) and then analyzing the context programmatically to make appropriate
 business logic decisions. For example in the stock management demo, the application will need to ensure that the prices
-paid for each item always reflect the current price held within the **Product** entity. For a dynamic system, the 
+paid for each item always reflect the current price held within the **Product** entity. For a dynamic system, the
 application will also need to be able to amend the current context. (e.g. creating or updating data or actuating a sensor
 for example)
 
 In general terms, three basic scenarios are defined below:
 
 * Reading Data -  e.g. Give me all the data for the **Store** entity `urn:ngsi-ld:Store:001`
-* Aggregation - e.g. Combine the **InventoryItems**  entities for Store `urn:ngsi-ld:Store:001` with 
+* Aggregation - e.g. Combine the **InventoryItems**  entities for Store `urn:ngsi-ld:Store:001` with
   the names and prices of the **Product** entities for sale
 * Altering the Context - e.g. Make a sale of a product:
   + Update the daily sales records by the price of the **Product**
@@ -67,7 +67,7 @@ depending upon business needs.
 
 ## Making HTTP Requests in the language of your choice
 
-The [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests. 
+The [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) specification defines a language agnostic REST API based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply through making HTTP requests.
 
 Here for example is the same HTTP request written in [PHP](https://secure.php.net/), [Node.js](https://Node.js.org/) and [Java](https://www.oracle.com/java/)
 
@@ -150,11 +150,11 @@ As you can see from the examples above, each one uses their own programming para
 * Check for an error status and throw an exception if necessary.
 * Return the body of the request for further processing.
 
-Since such boilerplate code is frequently re-used it is usually hidden within a library. 
+Since such boilerplate code is frequently re-used it is usually hidden within a library.
 
 The [`swagger-codegen`](https://github.com/swagger-api/swagger-codegen) tool is able to generate boilerplate API client libraries in a wide variety of programming languages directly from the [NGSI v2 Swagger Specification](https://fiware.github.io/specifications/OpenAPI/ngsiv2). Currently `swagger-codegen` will generate code for the following languages:
 
-* ActionScript, Ada, Apex, Bash, C#, C++, Clojure, Dart, Elixir, Elm, Eiffel, Erlang, Go, Groovy, 
+* ActionScript, Ada, Apex, Bash, C#, C++, Clojure, Dart, Elixir, Elm, Eiffel, Erlang, Go, Groovy,
   Haskell, Java, Kotlin, Lua, Node.js, Objective-C, Perl, PHP, PowerShell, Python, R, Ruby, Rust, Scala,
   Swift, Typescript
 
@@ -163,7 +163,7 @@ For example the command:
 ```console
 swagger-codegen generate \
   -l javascript \
-  -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json 
+  -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json
 ```
 
 Will generate a default ES5 npm package for NGSI v2 directly from the current specification.
@@ -183,12 +183,12 @@ swagger-codegen config-help -l <language-name>
 ## The teaching goal of this tutorial
 
 The aim of this tutorial is to improve developer understanding of programmatic access of context data
-through defining and discussing a series of generic code examples covering common data access scenarios. 
+through defining and discussing a series of generic code examples covering common data access scenarios.
 For this purpose a simple Node.js Express application will be created.
 
 The intention here is not to teach users how to write an application in Express - indeed any language could
 have been chosen. It is merely to show how **any** sample programming language could be used alter the
-context to achieve the business logic goals. 
+context to achieve the business logic goals.
 
 Obviously, your choice of programming language will depend upon your own business needs - when reading the code
 below please keep this in mind and substitute Node.js with your own programming language as appropriate.
@@ -207,8 +207,8 @@ The **Store**, **Product** and **InventoryItem** entities will be used to displa
 This application will make use of only one FIWARE component - the [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/). Usage of the Orion Context Broker is sufficient for an application to qualify as *“Powered by FIWARE”*.
 
 Currently, the Orion Context Broker relies on open source [MongoDB](https://www.mongodb.com/) technology to keep
-persistence of the context data it holds. To request context data from external sources, a simple Context Provider NGSI 
-proxy has also been added. To visualize and interact with the Context we will add a simple Express application 
+persistence of the context data it holds. To request context data from external sources, a simple Context Provider NGSI
+proxy has also been added. To visualize and interact with the Context we will add a simple Express application
 
 
 Therefore, the architecture will consist of four elements:
@@ -218,7 +218,7 @@ Therefore, the architecture will consist of four elements:
   + Used by the Orion Context Broker to hold context data information such as data entities, subscriptions and registrations
 * The **Context Provider NGSI** proxy which will will:
   + receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
-  + makes requests to publicly available data sources using their own APIs in a proprietory format 
+  + makes requests to publicly available data sources using their own APIs in a proprietory format
   + returns context data back to the Orion Context Broker in [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
 * The **Stock Management Frontend** which will will:
   + Display store information
@@ -226,7 +226,7 @@ Therefore, the architecture will consist of four elements:
   + Allow users to "buy" products and reduce the stock count.
 
 Since all interactions between the elements are initiated by HTTP requests, the entities can be containerized and run
-from exposed ports. 
+from exposed ports.
 
 ![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.png)
 
@@ -238,22 +238,31 @@ has been described in a [previous tutorial](https://github.com/Fiware/tutorials.
 ## Docker
 
 To keep things simple both components will be run using [Docker](https://www.docker.com). **Docker** is a container technology
-which allows to different components isolated into their respective environments. 
+which allows to different components isolated into their respective environments.
 
 * To install Docker on Windows follow the instructions [here](https://docs.docker.com/docker-for-windows/)
 * To install Docker on Mac follow the instructions [here](https://docs.docker.com/docker-for-mac/)
 * To install Docker on Linux follow the instructions [here](https://docs.docker.com/install/)
 
-**Docker Compose** is a tool for defining and running multi-container Docker applications. A 
+**Docker Compose** is a tool for defining and running multi-container Docker applications. A
 [YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Entity-Relationships/master/docker-compose.yml) is used
-configure the required services for the application. This means all container services can be brought up in a single 
-command. Docker Compose is installed by default  as part of Docker for Windows and  Docker for Mac, however Linux users 
+configure the required services for the application. This means all container services can be brought up in a single
+command. Docker Compose is installed by default  as part of Docker for Windows and  Docker for Mac, however Linux users
 will need to follow the instructions found  [here](https://docs.docker.com/compose/install/)
 
-## Cygwin 
+You can check your current **Docker** and **Docker Compose** versions using the following commands:
+
+```console
+docker-compose -v
+docker version
+```
+
+Please ensure that you are using Docker version 18.03 or higher and Docker Compose 1.21 or higher and upgrade if necessary.
+
+## Cygwin
 
 We will start up our services using a simple bash script. Windows users should download [cygwin](http://www.cygwin.com/) to provide a
-command line functionality similar to a Linux distribution on Windows. 
+command line functionality similar to a Linux distribution on Windows.
 
 # Start Up
 
@@ -272,7 +281,7 @@ This command will also import seed data from the previous [Stock Management exam
 >
 >```console
 >./services stop
->``` 
+>```
 >
 
 #  Stock Management Frontend
@@ -303,10 +312,10 @@ with the following names:
 | HTTP Verb   | `/v2/entities`  | `/v2/entities/<entity>`  |
 |-----------  |:--------------: |:-----------------------: |
 | **POST**    | [`createEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#createEntity)  | :x:  |
-| **GET**     | [`listEntities()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#listEntities) | [`retrieveEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntity)  | 
+| **GET**     | [`listEntities()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#listEntities) | [`retrieveEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntity)  |
 | **PUT**     | :x:   | :x:   |
 | **PATCH**   | :x:   | :x:   |
-| **DELETE**  | :x:  | [`removeEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#removeEntity)  | 
+| **DELETE**  | :x:  | [`removeEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#removeEntity)  |
 
 
 
@@ -327,7 +336,7 @@ The code under discussion can be found within the `store` controller in the [Git
 
 We don't want to reinvent the wheel and spend time writing a unnecessary boilerplate code for HTTP access. Therefore
 we will use the existing `ngsi_v2`  NPM library. This needs to be included in the header of the file as shown. The
-`basePath` must also be set - this defines the location of the Orion Context Broker. 
+`basePath` must also be set - this defines the location of the Orion Context Broker.
 
 ```javascript
 const NgsiV2 = require('ngsi_v2');
@@ -340,7 +349,7 @@ defaultClient.basePath = process.env.CONTEXT_BROKER || 'http://localhost:1026/v2
 
 This example reads the context data of a given **Store** entity to display the results on screen.
 Reading entity data can be done using the `apiInstance.retrieveEntity()` method. Since the library uses callbacks,
-they have been wrapped by a `Promise` function as shown below. The library function `apiInstance.retrieveEntity()` 
+they have been wrapped by a `Promise` function as shown below. The library function `apiInstance.retrieveEntity()`
 will fill out the URL for the GET request and make the necessary HTTP call:
 
 ```javascript
@@ -450,14 +459,14 @@ the cash till.
 
 ![Till](https://fiware.github.io/tutorials.Accessing-Context/img/till.png)
 
-Multiple entities can be requested and aggregated by creating a `Promise` chain or by using `Promise.all`. 
-Here the **Product**  and **InventoryItems** entities have been requested using the `apiInstance.listEntities()` 
-library method. The presence of the `q` parameter in the request will filter the list of entities received. 
+Multiple entities can be requested and aggregated by creating a `Promise` chain or by using `Promise.all`.
+Here the **Product**  and **InventoryItems** entities have been requested using the `apiInstance.listEntities()`
+library method. The presence of the `q` parameter in the request will filter the list of entities received.
 
 
 ```javascript
 function displayTillInfo(req, res) {
-	Promise.all([ 
+	Promise.all([
 		listEntities({
 		options: 'keyValues',
 		type: 'Product',
@@ -508,7 +517,7 @@ mixin product(item, products)
 ```
 
 
-Again an error handler has been created to ensure that if any of the HTTP requests to the Orion Context Broker fail, an empty list of products is returned. 
+Again an error handler has been created to ensure that if any of the HTTP requests to the Orion Context Broker fail, an empty list of products is returned.
 
 Retrieving the full list of **Product** entities for each request is not efficient. It would be better to load the list of products from cache, and only update the list if prices have changed. This could be achieved using the NGSI Subscription mechanism which is the subject of a subsequent tutorial.
 
@@ -518,15 +527,15 @@ This is the equivalent of the following cURL commands (plus some business logic)
 curl -X GET \
   'http://localhost:1026/v2/entities/?type=Product&options=keyValues'
 curl -X GET \
-  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'  
+  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'
 ```
 
 
 ### Updating Context
 
 Buying an item will involve decrementing the number of items left on a shelf. The example consists of two linked requests.
-The reading of the **InventoryItem** entity data can be done using the `apiInstance.retrieveEntity()` method as shown 
-previously. The data is then amended  in memory before being sent to the Orion Context Broker using the 
+The reading of the **InventoryItem** entity data can be done using the `apiInstance.retrieveEntity()` method as shown
+previously. The data is then amended  in memory before being sent to the Orion Context Broker using the
 `apiInstance.updateExistingEntityAttributes()` method.  This is effectively just a wrapper around an HTTP PATCH request to
 `http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem`, with a body containing the elements to be updated.
 There is no error handling on this function, it has been left to a function on the router.
@@ -570,8 +579,8 @@ curl -X GET \
 curl -iX PATCH \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
   -H 'Content-Type: application/json' \
-  -d '{ "shelfCount": 
-  { "type": "Integer", "value": "13" } 
+  -d '{ "shelfCount":
+  { "type": "Integer", "value": "13" }
 }'
 ```
 
