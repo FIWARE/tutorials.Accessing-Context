@@ -24,13 +24,13 @@ case "${command}" in
 		echo -e "\033[1;30mContext-Provider\033[0m displays a web app to manipulate the context directly"
 		echo ""
 		docker-compose --log-level ERROR -p fiware up -d --remove-orphans
-		sleep 2
 		echo "loading data"
 		./import-data
 		;;
 	"stop")
 		echo "stopping containers"
 		docker-compose --log-level ERROR -p fiware down -v --remove-orphans
+		echo "http://localhost:3000/app/store/urn:ngsi-ld:Store:001"
 		;;
 	"create")
 		echo "Obtaining Mongo DB image"
