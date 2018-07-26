@@ -41,7 +41,7 @@
 
 * データの読み込み - 例えば、**Store** エンティティ `urn:ngsi-ld:Store:001` のすべてのデータを取得
 * 集約 - 例えば Store `urn:ngsi-ld:Store:001` の **InventoryItems** エンティティを、販売する **Product** エンティティの名前と価格と組み合わせる
-* コンテキストを変更 - 例えば、製品を販売します : 
+* コンテキストを変更 - 例えば、製品を販売します :
     + 日々の販売記録を **Product** の価格で更新します
     + **InventoryItem** エンティティの `shelfCount` を減らします
     + 販売が発生したことを示す、新しいトランザクション・ログレコードを作成します
@@ -202,7 +202,7 @@ swagger-codegen config-help -l <language-name>
     + [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリクエストを受信します
     + 独自の API を独自のフォーマットで使用して、公開されているデータソースへのリクエストを行います
     + [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 形式でコンテキスト・データを Orion Context Broker に返します
-* **在庫管理フロントエンド**は以下を行います : 
+* **在庫管理フロントエンド**は以下を行います :
     + ストア情報を表示します
     + 各ストアで購入できる製品を表示します
     + ユーザが製品を"購入"して、在庫数を減らすことを可能にします
@@ -227,8 +227,17 @@ swagger-codegen config-help -l <language-name>
 
 **Docker Compose** は、マルチコンテナ Docker アプリケーションを定義して実行するためのツールです。[YAML file](https://raw.githubusercontent.com/Fiware/tutorials.Getting-Started/master/docker-compose.yml) ファイルは、アプリケーションのために必要なサービスを構成するために使用します。つまり、すべてのコンテナ・サービスは1つのコマンドで呼び出すことができます。Docker Compose は、デフォルトで Docker for Windows とD ocker for Mac の一部としてインストールされますが、Linux ユーザは[ここ](https://docs.docker.com/compose/install/)に記載されている手順に従う必要があります。
 
+次のコマンドを使用して、現在の **Docker** バージョンと **Docker Compose** バージョンを確認できます :
+
+```console
+docker-compose -v
+docker version
+```
+
+Docker バージョン 18.03 以降と Docker Compose 1.21 以上を使用していることを確認し、必要に応じてアップグレードしてください。
+
 <a name="cygwin"></a>
-## Cygwin 
+## Cygwin
 
 シンプルな bash スクリプトを使用してサービスを開始します。Windows ユーザは [cygwin](http://www.cygwin.com/) をダウンロードして、Windows 上の Linux ディストリビューションと同様のコマンドライン機能を提供する必要があります。
 
@@ -250,11 +259,11 @@ cd tutorials.Accessing-Context
 >
 >```console
 >./services stop
->``` 
+>```
 >
 
 <a name="stock-management-frontend"></a>
-# 在庫管理フロントエンド 
+# 在庫管理フロントエンド
 
 デモ用の Node.js Express のすべてのコードは、GitHubリポジトリ内の `proxy` フォルダ内にあります。[在庫管理の例](https://github.com/Fiware/tutorials.Accessing-Context/tree/master/proxy)。アプリケーションは次の URLs で実行されます :
 
@@ -273,15 +282,15 @@ cd tutorials.Accessing-Context
 <a name="stock-management-frontend"></a>
 ## NGSI v2 npm ライブラリ
 
-Swagger が生成した NGSI v2 クライアント [npm ライブラリ](https://github.com/smartsdk/ngsi-sdk-javascript) は、[SmartSDK](https://www.smartsdk.eu/) チームによって開発されました 。これは、低レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラリであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は、次の名前のNGSI v2 [CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に直接マッピングされます :
+Swagger が生成した NGSI v2 クライアント [npm ライブラリ](https://github.com/smartsdk/ngsi-sdk-javascript) は、[SmartSDK](https://www.smartsdk.eu/) チームによって開発されました。これは、低レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラリであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は、次の名前のNGSI v2 [CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に直接マッピングされます :
 
 | HTTP Verb   | `/v2/entities`  | `/v2/entities/<entity>`  |
 |-----------  |:--------------: |:-----------------------: |
 | **POST**    | [`createEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#createEntity)  | :x:  |
-| **GET**     | [`listEntities()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#listEntities) | [`retrieveEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntity)  | 
+| **GET**     | [`listEntities()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#listEntities) | [`retrieveEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#retrieveEntity)  |
 | **PUT**     | :x:   | :x:   |
 | **PATCH**   | :x:   | :x:   |
-| **DELETE**  | :x:  | [`removeEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#removeEntity)  | 
+| **DELETE**  | :x:  | [`removeEntity()`](https://github.com/smartsdk/ngsi-sdk-javascript/blob/master/docs/EntitiesApi.md#removeEntity)  |
 
 
 
@@ -421,7 +430,7 @@ curl -X GET \
 
 ```javascript
 function displayTillInfo(req, res) {
-	Promise.all([ 
+	Promise.all([
 		listEntities({
 		options: 'keyValues',
 		type: 'Product',
@@ -481,13 +490,13 @@ Orion Context Broker への HTTP リクエストのいずれかが失敗した�
 curl -X GET \
   'http://localhost:1026/v2/entities/?type=Product&options=keyValues'
 curl -X GET \
-  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'  
+  'http://localhost:1026/v2/entities/?q=refStore==urn:ngsi-ld:Store:001&type=InventoryItem&options=keyValues'
 ```
 
 <a name="updating-context"></a>
 ### コンテキストの更新
 
-アイテムを購入すると、棚に残されたアイテムの数が減ることになります。この例は2つのリンクされたリクエストで構成されています。**InventoryItem** エンティティ・データの読み取りは、前述のように `apiInstance.retrieveEntity()` メソッドを使用して行うことができます。`apiInstance.updateExistingEntityAttributes()` メソッドを使用して Orion Context Broker に送信される前に、データはメモリ内で修正されます 。これは事実上、更新される要素を含むボディを持つ `http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem` への HTTP PATCH リクエストを囲むラッパーです。この機能にはエラー処理がありません。ルータの機能に委ねられています。
+アイテムを購入すると、棚に残されたアイテムの数が減ることになります。この例は2つのリンクされたリクエストで構成されています。**InventoryItem** エンティティ・データの読み取りは、前述のように `apiInstance.retrieveEntity()` メソッドを使用して行うことができます。`apiInstance.updateExistingEntityAttributes()` メソッドを使用して Orion Context Broker に送信される前に、データはメモリ内で修正されます。これは事実上、更新される要素を含むボディを持つ `http://localhost:1026/v2/entities/<inventory-id>?type=InventoryItem` への HTTP PATCH リクエストを囲むラッパーです。この機能にはエラー処理がありません。ルータの機能に委ねられています。
 
 
 ```javascript
@@ -528,8 +537,8 @@ curl -X GET \
 curl -iX PATCH \
   'http://localhost:1026/v2/entities/urn:ngsi-ld:InventoryItem:006/attrs' \
   -H 'Content-Type: application/json' \
-  -d '{ "shelfCount": 
-  { "type": "Integer", "value": "13" } 
+  -d '{ "shelfCount":
+  { "type": "Integer", "value": "13" }
 }'
 ```
 
