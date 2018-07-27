@@ -1,6 +1,12 @@
 @startuml
 object Product
 
+skinparam object {
+  BackgroundColor #f5f5f5
+  ArrowColor #4c4c4c
+  BorderColor #233c68
+}
+
 Product : id 
 Product : name 
 Product : price 
