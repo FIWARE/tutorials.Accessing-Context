@@ -28,7 +28,7 @@ services:
       - "1026:1026"
     command: -dbhost mongo-db -logLevel DEBUG
 
- tutorial:
+  tutorial:
     image: fiware/tutorials.context-provider
     hostname: tutorial
     container_name: fiware-tutorial
