@@ -3,7 +3,7 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Accessing-Context.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](http://fiware.github.io/context.Orion/api/v2/stable/)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/core.Orion/api/v2/stable/)
 
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。チュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
 
