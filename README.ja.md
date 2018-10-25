@@ -9,7 +9,7 @@
 
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法について説明しています。チュートリアルでは、以前の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成されたエンティティをもとにして、 コンテキスト・データを取得および変更するために、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーションでコードを記述する方法を理解できます。これにより、コマンドラインを使用して cUrl コマンドを呼び出す必要がなくなります。
 
-このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](http://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
+このチュートリアルでは、主に Node.js で記述されたコードについて説明しますが、結果の一部は [cUrl](https://ec.haxx.se/) コマンドを使用して確認できます。同じコマンドの [Postman マニュアル](https://fiware.github.io/tutorials.Accessing-Context/)も利用できます。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
 
@@ -150,7 +150,7 @@ try {
 ```console
 swagger-codegen generate \
   -l javascript \
-  -i http://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json
+  -i https://fiware.github.io/specifications/OpenAPI/ngsiv2/ngsiv2-openapi.json
 ```
 
 現在の仕様から NGSI v2 用のデフォルト ES5 npm パッケージを直接生成します。
@@ -267,7 +267,7 @@ cd tutorials.Accessing-Context
 <a name="stock-management-frontend"></a>
 # 在庫管理フロントエンド
 
-デモ用の Node.js Express のすべてのコードは、GitHubリポジトリ内の `proxy` フォルダ内にあります。[在庫管理の例](https://github.com/Fiware/tutorials.Accessing-Context/tree/master/proxy)。アプリケーションは次の URLs で実行されます :
+デモ用の Node.js Express のすべてのコードは、GitHubリポジトリ内の `proxy` フォルダ内にあります。[在庫管理の例](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/docker/context-provider)。アプリケーションは次の URLs で実行されます :
 
 
 * `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
