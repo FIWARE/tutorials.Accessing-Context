@@ -356,7 +356,7 @@ cd tutorials.Accessing-Context
 
 デモ用の Node.js Express のすべてのコードは、GitHub リポジトリ内の `proxy` フォ
 ルダ内にあります
-。[在庫管理の例](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/docker/context-provider)。
+。[在庫管理の例](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/context-provider)。
 アプリケーションは次の URLs で実行されます :
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
@@ -404,7 +404,7 @@ Swagger が生成した NGSI v2 クライアント
 ## コードの分析
 
 説明しているコードは
-、[Git リポジトリ](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/store.js)の
+、[Git リポジトリ](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)の
 `store` コントローラ内にあります。
 
 <a name="initializing-the-library"></a>

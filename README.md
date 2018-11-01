@@ -337,7 +337,7 @@ on startup.
 
 All the code Node.js Express for the demo can be found within the `proxy` folder
 within the GitHub
-repository.[Stock Management example](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/docker/context-provider).
+repository.[Stock Management example](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/context-provider).
 The application runs on the following URLs:
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
@@ -381,7 +381,7 @@ with the following names:
 ## Analyzing the Code
 
 The code under discussion can be found within the `store` controller in the
-[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/docker/context-provider/express-app/controllers/store.js)
+[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)
 
 ### Initializing the library
 
