@@ -26,7 +26,10 @@ for the same commands is also available.
 
 -   このチュートリアルは[日本語](README.ja.md)でもご覧いただけます。
 
-# Contents
+## Contents
+
+<details>
+<summary><strong>Details</strong></summary>
 
 -   [Accessing the Context Data](#accessing-the-context-data)
     -   [Making HTTP requests in the language of your choice](#making-http-requests-in-the-language-of-your-choice)
@@ -46,6 +49,8 @@ for the same commands is also available.
         -   [Aggregating Products and Inventory Items](#aggregating-products-and-inventory-items)
         -   [Updating Context](#updating-context)
 -   [Next Steps](#next-steps)
+
+</details>
 
 # Accessing the Context Data
 

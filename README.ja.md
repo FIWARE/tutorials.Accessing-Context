@@ -24,7 +24,10 @@ cUrl コマンドを呼び出す必要がなくなります。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
 
-# 内容
+## 内容
+
+<details>
+<summary>詳細 <b>(クリックして拡大)</b></summary>
 
 -   [コンテキスト・データへのアクセス](#accessing-the-context-data)
     -   [任意の言語で HTTP リクエストを作成](#making-http-requests-in-the-language-of-your-choice)
@@ -44,6 +47,8 @@ cUrl コマンドを呼び出す必要がなくなります。
         -   [製品と在庫アイテムの集約](#aggregating-products-and-inventory-items)
         -   [コンテキストの更新](#updating-context)
 -   [次のステップ](#next-steps)
+
+</details>
 
 <a name="accessing-the-context-data"></a>
 
