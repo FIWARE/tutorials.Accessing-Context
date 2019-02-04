@@ -7,6 +7,8 @@
 <br/>
 [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
+<!-- prettier-ignore -->
+
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法に
 ついて説明しています。チュートリアルでは、以前
 の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成さ
