@@ -7,7 +7,7 @@
 <br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 This tutorial teaches FIWARE users how to alter the context programmatically. The tutorial builds on the entities
-created in the previous [stock management example](https://github.com/Fiware/tutorials.Context-Providers/) and enables a
+created in the previous [stock management example](https://github.com/FIWARE/tutorials.Context-Providers/) and enables a
 user understand how to write code in an [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) capable
 [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context
 data. This removes the need to use the command-line to invoke cUrl commands.
@@ -243,7 +243,7 @@ from exposed ports.
 ![](https://fiware.github.io/tutorials.Accessing-Context/img/architecture.png)
 
 The necessary configuration information can be seen in the services section of the associated `docker-compose.yml` file.
-It has been described in a [previous tutorial](https://github.com/Fiware/tutorials.Context-Providers/)
+It has been described in a [previous tutorial](https://github.com/FIWARE/tutorials.Context-Providers/)
 
 # Prerequisites
 
@@ -290,7 +290,7 @@ cd tutorials.Accessing-Context
 ```
 
 This command will also import seed data from the previous
-[Stock Management example](https://github.com/Fiware/tutorials.Context-Providers) on startup.
+[Stock Management example](https://github.com/FIWARE/tutorials.Context-Providers) on startup.
 
 > :information_source: **Note:** If you want to clean up and start over again you can do so with the following command:
 >
@@ -301,7 +301,7 @@ This command will also import seed data from the previous
 # Stock Management Frontend
 
 All the code Node.js Express for the demo can be found within the `proxy` folder within the GitHub
-repository.[Stock Management example](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/context-provider).
+repository.[Stock Management example](https://github.com/FIWARE/tutorials.Step-by-Step/tree/master/context-provider).
 The application runs on the following URLs:
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
@@ -319,7 +319,7 @@ The application runs on the following URLs:
 A Swagger Generated NGSI v2 client [npm library](https://github.com/smartsdk/ngsi-sdk-javascript) has been developed by
 the [SmartSDK](https://www.smartsdk.eu/) team. This is a callback-based library which will be used to take care of our
 low level HTTP requests and will simplify the code to be written. The methods exposed in the library map directly onto
-the NGSI v2 [CRUD operations](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud) with the following
+the NGSI v2 [CRUD operations](https://github.com/FIWARE/tutorials.CRUD-Operations#what-is-crud) with the following
 names:
 
 | HTTP Verb  |                                                  `/v2/entities`                                                  |                                               `/v2/entities/<entity>`                                                |
@@ -341,7 +341,7 @@ names:
 ## Analyzing the Code
 
 The code under discussion can be found within the `store` controller in the
-[Git Repository](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)
+[Git Repository](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)
 
 ### Initializing the library
 

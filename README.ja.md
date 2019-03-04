@@ -11,7 +11,7 @@
 
 このチュートリアルでは、FIWARE ユーザにプログラムでコンテキストを変更する方法に
 ついて説明しています。チュートリアルでは、以前
-の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers/)で作成さ
+の[在庫管理の例](https://github.com/FIWARE/tutorials.Context-Providers/)で作成さ
 れたエンティティをもとにして、 コンテキスト・データを取得および変更するために
 、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の
 [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーショ
@@ -279,7 +279,7 @@ FIWARE"_ と認定するには、Orion Context Broker を使用するだけで�
 
 必要な設定情報は、関連する `docker-compose.yml` ファイルの services セクションに
 あります。
-[以前のチュートリアル](https://github.com/Fiware/tutorials.Context-Providers/)で
+[以前のチュートリアル](https://github.com/FIWARE/tutorials.Context-Providers/)で
 説明しました。
 
 <a name="prerequisites"></a>
@@ -347,7 +347,7 @@ cd tutorials.Accessing-Context
 ```
 
 このコマンドは、起動時に以前
-の[在庫管理の例](https://github.com/Fiware/tutorials.Context-Providers)からシー
+の[在庫管理の例](https://github.com/FIWARE/tutorials.Context-Providers)からシー
 ドデータをインポートします。
 
 > :information_source: **注 :** クリーンアップをやり直したい場合は、次のコマンド
@@ -363,7 +363,7 @@ cd tutorials.Accessing-Context
 
 デモ用の Node.js Express のすべてのコードは、GitHub リポジトリ内の `proxy` フォ
 ルダ内にあります
-。[在庫管理の例](https://github.com/Fiware/tutorials.Step-by-Step/tree/master/context-provider)。
+。[在庫管理の例](https://github.com/FIWARE/tutorials.Step-by-Step/tree/master/context-provider)。
 アプリケーションは次の URLs で実行されます :
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
@@ -387,7 +387,7 @@ Swagger が生成した NGSI v2 クライアント
 レベルの HTTP リクエストを処理するために使用されるコールバック・ベースのライブラ
 リであり、記述されるコードを単純化します。ライブラリに公開されているメソッド は
 、次の名前の NGSI v2
-[CRUD 操作](https://github.com/Fiware/tutorials.CRUD-Operations#what-is-crud)に
+[CRUD 操作](https://github.com/FIWARE/tutorials.CRUD-Operations#what-is-crud)に
 直接マッピングされます :
 
 | HTTP Verb  |                                                  `/v2/entities`                                                  |                                               `/v2/entities/<entity>`                                                |
@@ -411,7 +411,7 @@ Swagger が生成した NGSI v2 クライアント
 ## コードの分析
 
 説明しているコードは
-、[Git リポジトリ](https://github.com/Fiware/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)の
+、[Git リポジトリ](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)の
 `store` コントローラ内にあります。
 
 <a name="initializing-the-library"></a>
