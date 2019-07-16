@@ -346,9 +346,11 @@ The code under discussion can be found within the `store` controller in the
 ### Initializing the library
 
 <!-- textlint-disable write-good -->
+
 We don't want to reinvent the wheel and spend time writing a unnecessary boilerplate code for HTTP access. Therefore we
 will use the existing `ngsi_v2` npm library. This needs to be included in the header of the file as shown. The
 `basePath` must also be set - this defines the location of the Orion Context Broker.
+
 <!-- textlint-enable write-good -->
 
 ```javascript
