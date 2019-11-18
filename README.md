@@ -3,8 +3,8 @@
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Accessing-Context.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/fiware.svg)](https://stackoverflow.com/questions/tagged/fiware)
-[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/orion/api/v2/stable/)
-<br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
+[![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg)](https://fiware-ges.github.io/orion/api/v2/stable/) <br/>
+[![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 This tutorial teaches FIWARE users how to alter the context programmatically. The tutorial builds on the entities
 created in the previous [stock management example](https://github.com/FIWARE/tutorials.Context-Providers/) and enables a
@@ -283,7 +283,7 @@ All services can be initialized from the command-line by running the bash script
 clone the repository and create the necessary images by running the commands as shown:
 
 ```console
-git clone git@github.com:FIWARE/tutorials.Accessing-Context.git
+git clone https://github.com/FIWARE/tutorials.Accessing-Context.git
 cd tutorials.Accessing-Context
 
 ./services create; ./services start;
