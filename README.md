@@ -8,7 +8,7 @@
 
 This tutorial teaches FIWARE users how to alter the context programmatically. The tutorial builds on the entities
 created in the previous [stock management example](https://github.com/FIWARE/tutorials.Context-Providers/) and enables a
-user understand how to write code in an [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) capable
+user understand how to write code in an [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) capable
 [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) application in order to retrieve and alter context
 data. This removes the need to use the command-line to invoke cUrl commands.
 
@@ -72,7 +72,7 @@ depending upon business needs.
 
 ## Making HTTP Requests in the language of your choice
 
-The [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) specification defines a language agnostic REST API
+The [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) specification defines a language agnostic REST API
 based on the standard usage of HTTP verbs. Therefore context data can be accessed by any programming language, simply
 through making HTTP requests.
 
@@ -223,15 +223,15 @@ proxy has also been added. To visualize and interact with the Context we will ad
 Therefore, the architecture will consist of four elements:
 
 -   The [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/) which will receive requests using
-    [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
+    [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
 -   The underlying [MongoDB](https://www.mongodb.com/) database :
     -   Used by the Orion Context Broker to hold context data information such as data entities, subscriptions and
         registrations
 -   The **Context Provider NGSI** proxy which will:
-    -   receive requests using [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
+    -   receive requests using [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2)
     -   makes requests to publicly available data sources using their own APIs in a proprietary format
     -   returns context data back to the Orion Context Broker in
-        [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
+        [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) format.
 -   The **Stock Management Frontend** which will:
     -   Display store information
     -   Show which products can be bought at each store

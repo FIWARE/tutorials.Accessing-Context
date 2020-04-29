@@ -13,7 +13,7 @@
 ついて説明しています。チュートリアルでは、以前
 の[在庫管理の例](https://github.com/FIWARE/tutorials.Context-Providers/)で作成さ
 れたエンティティをもとにして、 コンテキスト・データを取得および変更するために
-、[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の
+、[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 対応 の
 [Node.js](https://nodejs.org/) [Express](https://expressjs.com/) アプリケーショ
 ンでコードを記述する方法を理解できます。これにより、コマンドラインを使用して
 cUrl コマンドを呼び出す必要がなくなります。
@@ -85,7 +85,7 @@ cUrl コマンドを呼び出す必要がなくなります。
 
 ## 任意の言語で HTTP リクエストを作成
 
-[NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) の仕様では、HTTP
+[NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) の仕様では、HTTP
 動詞の標準的な使用法に基づいて、言語に依存しない REST API を定義します。したがっ
 て、コンテキスト・データは、HTTP リクエストを行うだけで、どのプログラミング言語
 でもアクセスできます。
@@ -255,17 +255,17 @@ FIWARE"_ と認定するには、Orion Context Broker を使用するだけで�
 
 したがって、アーキテクチャは 4 つの要素で構成されます :
 
--   [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリ
+-   [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用してリ
     クエストを受信する Orion Context Broker サーバ
 -   バックエンドの [MongoDB](https://www.mongodb.com/) データベース
     -   Orion Context Broker が、データ・エンティティなどのコンテキスト・データ
         情報、サブスクリプション、登録などを保持するために使用します
 -   **コンテキスト・プロバイダ NGSI proxy** は次のようになります :
-    -   [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用し
+    -   [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) を使用し
         てリクエストを受信します
     -   独自の API を独自のフォーマットで使用して、公開されているデータソースへ
         のリクエストを行います
-    -   [NGSI](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 形式でコ
+    -   [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ngsiv2) 形式でコ
         ンテキスト・データを Orion Context Broker に返します
 -   **在庫管理フロントエンド**は以下を行います :
     -   ストア情報を表示します
