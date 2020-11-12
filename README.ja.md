@@ -413,8 +413,8 @@ Swagger が生成した NGSI v2 クライアント
 ## コードの分析
 
 説明しているコードは
-、[Git リポジトリ](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/store.js)の
-`store` コントローラ内にあります。
+、[Git リポジトリ](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/ngsi-v2/store.js)
+の `store` コントローラ内にあります。
 
 <a name="initializing-the-library"></a>
 
