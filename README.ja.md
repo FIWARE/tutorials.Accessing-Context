@@ -365,7 +365,7 @@ git checkout NGSI-v2
 
 デモ用の Node.js Express のすべてのコードは、GitHub リポジトリ内の `proxy` フォ
 ルダ内にあります
-。[在庫管理の例](https://github.com/FIWARE/tutorials.Step-by-Step/tree/master/context-provider)。
+。[在庫管理の例](https://github.com/FIWARE/tutorials.NGSI-v2/tree/master/context-provider)。
 アプリケーションは次の URLs で実行されます :
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
@@ -413,7 +413,7 @@ Swagger が生成した NGSI v2 クライアント
 ## コードの分析
 
 説明しているコードは
-、[Git リポジトリ](https://github.com/FIWARE/tutorials.Step-by-Step/blob/master/context-provider/controllers/ngsi-v2/store.js)
+、[Git リポジトリ](https://github.com/FIWARE/tutorials.NGSI-v2/blob/master/context-provider/controllers/ngsi-v2/store.js)
 の `store` コントローラ内にあります。
 
 <a name="initializing-the-library"></a>
