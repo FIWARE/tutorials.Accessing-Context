@@ -1,12 +1,10 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.Accessing-Context/img/fiware.png)](https://www.fiware.org/developers)
 [![NGSI v2](https://img.shields.io/badge/NGSI-v2-5dc0cf.svg)](https://fiware-ges.github.io/orion/api/v2/stable/)
 
-
 [![FIWARE Core Context Management](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/core.svg)](https://github.com/FIWARE/catalogue/blob/master/core/README.md)
 [![License: MIT](https://img.shields.io/github/license/fiware/tutorials.Accessing-Context.svg)](https://opensource.org/licenses/MIT)
 [![Support badge](https://img.shields.io/badge/tag-fiware-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware)
-<br/>
-[![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
+<br/> [![Documentation](https://img.shields.io/readthedocs/fiware-tutorials.svg)](https://fiware-tutorials.rtfd.io)
 
 <!-- prettier-ignore -->
 
@@ -27,7 +25,7 @@ cUrl コマンドを呼び出す必要がなくなります。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
 
-## 内容
+## コンテンツ
 
 <details>
 <summary>詳細 <b>(クリックして拡大)</b></summary>
@@ -127,7 +125,7 @@ const options = {
     qs: { options: "keyValues" }
 };
 
-request(options, function(error, response, body) {
+request(options, function (error, response, body) {
     if (error) throw new Error(error);
     console.log(body);
 });
@@ -321,7 +319,7 @@ docker-compose -v
 docker version
 ```
 
-Docker バージョン 18.03 以降と Docker Compose 1.29 以上を使用していることを確認
+Docker バージョン 20.10 以降と Docker Compose 1.29 以上を使用していることを確認
 し、必要に応じてアップグレードしてください。
 
 <a name="cygwin"></a>
@@ -428,8 +426,7 @@ HTTP アクセスのための不必要な定型コードを書くのに時間を
 ```javascript
 const NgsiV2 = require("ngsi_v2");
 const defaultClient = NgsiV2.ApiClient.instance;
-defaultClient.basePath =
-    process.env.CONTEXT_BROKER || "http://localhost:1026/v2";
+defaultClient.basePath = process.env.CONTEXT_BROKER || "http://localhost:1026/v2";
 ```
 
 <a name="reading-store-data"></a>
@@ -445,7 +442,7 @@ defaultClient.basePath =
 
 ```javascript
 function retrieveEntity(entityId, opts) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const apiInstance = new NgsiV2.EntitiesApi();
         apiInstance.retrieveEntity(entityId, opts, (error, data) => {
             return error ? reject(error) : resolve(data);
@@ -459,11 +456,11 @@ function retrieveEntity(entityId, opts) {
 ```javascript
 function displayStore(req, res) {
     retrieveEntity(req.params.storeId, { options: "keyValues", type: "Store" })
-        .then(store => {
+        .then((store) => {
             // If a store has been found display it on screen
             return res.render("store", { title: store.name, store });
         })
-        .catch(error => {
+        .catch((error) => {
             debug(error);
             // If no store has been found, display an error screen
             return res.render("store-error", { title: "Error", error });
@@ -568,14 +565,14 @@ function displayTillInfo(req, res) {
             type: "InventoryItem"
         })
     ])
-        .then(values => {
+        .then((values) => {
             // If values have been found display it on screen
             return res.render("till", {
                 products: values[0],
                 inventory: values[1]
             });
         })
-        .catch(error => {
+        .catch((error) => {
             debug(error);
             // An error occurred, return with no results
             return res.render("till", { products: {}, inventory: {} });
@@ -583,7 +580,7 @@ function displayTillInfo(req, res) {
 }
 
 function listEntities(opts) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const apiInstance = new NgsiV2.EntitiesApi();
         apiInstance.listEntities(opts, (error, data) => {
             return error ? reject(error) : resolve(data);
@@ -659,16 +656,11 @@ async function buyItem(req, res) {
 }
 
 function updateExistingEntityAttributes(entityId, body, opts) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         const apiInstance = new NgsiV2.EntitiesApi();
-        apiInstance.updateExistingEntityAttributes(
-            entityId,
-            body,
-            opts,
-            (error, data) => {
-                return error ? reject(error) : resolve(data);
-            }
-        );
+        apiInstance.updateExistingEntityAttributes(entityId, body, opts, (error, data) => {
+            return error ? reject(error) : resolve(data);
+        });
     });
 }
 ```
@@ -706,4 +698,4 @@ curl -iX PATCH \
 
 ## License
 
-[MIT](LICENSE) © 2018-2020 FIWARE Foundation e.V.
+[MIT](LICENSE) © 2018-2022 FIWARE Foundation e.V.
