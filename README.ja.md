@@ -24,6 +24,7 @@ cUrl コマンドを呼び出す必要がなくなります。
 用できます。
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/fb5f564d9bc65fc3690e)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/FIWARE/tutorials.Accessing-Context/tree/NGSI-v2)
 
 ## コンテンツ
 
