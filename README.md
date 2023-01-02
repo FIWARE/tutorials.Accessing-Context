@@ -303,8 +303,8 @@ This command will also import seed data from the previous
 # Stock Management Frontend
 
 All the code Node.js Express for the demo can be found within the `proxy` folder within the GitHub
-repository.[Stock Management example](https://github.com/FIWARE/tutorials.NGSI-v2/tree/master/context-provider).
-The application runs on the following URLs:
+repository.[Stock Management example](https://github.com/FIWARE/tutorials.NGSI-v2/tree/master/context-provider). The
+application runs on the following URLs:
 
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:001`
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:002`
