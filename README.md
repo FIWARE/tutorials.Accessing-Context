@@ -294,7 +294,8 @@ git checkout NGSI-v2
 This command will also import seed data from the previous
 [Stock Management example](https://github.com/FIWARE/tutorials.Context-Providers) on startup.
 
-> :information_source: **Note:** If you want to clean up and start over again you can do so with the following command:
+> [!NOTE]
+> If you want to clean up and start over again you can do so with the following command:
 >
 > ```console
 > ./services stop
@@ -311,7 +312,8 @@ application runs on the following URLs:
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:003`
 -   `http://localhost:3000/app/store/urn:ngsi-ld:Store:004`
 
-> :information_source: **Tip** Additionally, you can also watch the status of recent requests yourself by following the
+> [!TIP]
+> Additionally, you can also watch the status of recent requests yourself by following the
 > container logs or viewing information on `localhost:3000/app/monitor` on a web browser.
 >
 > ![FIWARE Monitor](https://fiware.github.io/tutorials.Accessing-Context/img/monitor.png)
