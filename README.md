@@ -29,6 +29,9 @@ git checkout NGSI-v2
 ```
 
 
+| ![NGSI v2](https://img.shields.io/badge/NGSI-v2-5dc0cf.svg) | :books: [Documentation](https://github.com/FIWARE/tutorials.Accessing-Context/tree/NGSI-v2) |
+| --- | --- |
+
 ---
 
 ## License
