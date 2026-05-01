@@ -53,6 +53,10 @@ making [cUrl](https://ec.haxx.se/) commands.
 
 </details>
 
+> "Ask and it shall be given you; seek, and ye shall find."
+>
+> — Matthew 7:7
+
 # Accessing the Context Data
 
 For a typical smart solution you will be retrieving context data from diverse sources (such as a CRM system, social
